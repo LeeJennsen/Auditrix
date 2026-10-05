@@ -1,0 +1,65 @@
+<header class="dashboard-header" style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+  <div>
+    <p style="margin:0 0 7px;color:#2563EB;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;">Audit operations</p>
+    <h1 style="font-size:26px;line-height:1.2;color:#1E293B;margin:0;">Audit Intelligence Platform</h1>
+    <p style="font-size:14px;color:#64748B;margin:8px 0 0;max-width:680px;">Monitor ticket quality, review exceptions, and keep AI assisted scoring consistent across your operation.</p>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button id="exportReportBtn" type="button" style="padding:10px 16px;border-radius:8px;border:1px solid #CBD5E1;background:#FFFFFF;font-size:13px;font-weight:600;color:#334155;">Export Report</button>
+    <button id="runBatchBtn" type="button" style="padding:10px 16px;border-radius:8px;border:0;background:#2563EB;color:#FFFFFF;font-size:13px;font-weight:600;">Run New Audit</button>
+  </div>
+</header>
+
+<section aria-label="Audit performance overview" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;">
+  <article style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:18px;">
+    <div style="font-size:12px;color:#64748B;font-weight:600;">Tickets Stored</div><div id="dashboard-total" style="font-size:30px;font-weight:700;color:#1E293B;margin-top:8px;">—</div><div style="font-size:11px;color:#64748B;margin-top:3px;">Saved audit records</div>
+  </article>
+  <article style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:18px;">
+    <div style="font-size:12px;color:#64748B;font-weight:600;">Auto-Cleared</div><div id="dashboard-passed" style="font-size:30px;font-weight:700;color:#1E7F4D;margin-top:8px;">—</div><div style="font-size:11px;color:#64748B;margin-top:3px;">Above the configured threshold</div>
+  </article>
+  <article style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:18px;">
+    <div style="font-size:12px;color:#64748B;font-weight:600;">Needs Review</div><div id="dashboard-flagged" style="font-size:30px;font-weight:700;color:#B45309;margin-top:8px;">—</div><div style="font-size:11px;color:#64748B;margin-top:3px;">Flagged for human QC</div>
+  </article>
+  <article style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:18px;">
+    <div style="font-size:12px;color:#64748B;font-weight:600;">Pass Rate</div><div id="dashboard-pass-rate" style="font-size:30px;font-weight:700;color:#1E293B;margin-top:8px;">—</div><div style="font-size:11px;color:#64748B;margin-top:3px;">Across saved audit records</div>
+  </article>
+</section>
+
+<section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:20px 22px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px;">
+    <div><h2 style="font-size:15px;color:#1E293B;margin:0;">Audit pipeline</h2><p style="font-size:12px;color:#64748B;margin:4px 0 0;">Track the flow from ticket intake through scoring and review.</p></div>
+    <button id="simulateBtn" type="button" onclick="simulateIngestion()" style="padding:9px 13px;border:1px solid #CBD5E1;border-radius:8px;background:#FFFFFF;color:#334155;font-size:12px;font-weight:600;">Refresh Audit Data</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+    <div id="pipe-1" style="flex:1;min-width:125px;text-align:center;padding:12px 8px;border-radius:8px;font-size:12px;font-weight:600;background:#F1F5F9;color:#64748B;border:1px solid #E2E8F0;">Ticket Created</div><span style="color:#94A3B8;">→</span>
+    <div id="pipe-2" style="flex:1;min-width:125px;text-align:center;padding:12px 8px;border-radius:8px;font-size:12px;font-weight:600;background:#F1F5F9;color:#64748B;border:1px solid #E2E8F0;">AI Analysis</div><span style="color:#94A3B8;">→</span>
+    <div id="pipe-3" style="flex:1;min-width:125px;text-align:center;padding:12px 8px;border-radius:8px;font-size:12px;font-weight:600;background:#F1F5F9;color:#64748B;border:1px solid #E2E8F0;">Scored</div><span style="color:#94A3B8;">→</span>
+    <div id="pipe-4" style="flex:1;min-width:125px;text-align:center;padding:12px 8px;border-radius:8px;font-size:12px;font-weight:600;background:#F1F5F9;color:#64748B;border:1px solid #E2E8F0;">Cleared / Flagged</div>
+  </div>
+  <div id="simResult" role="status" style="font-size:12px;color:#64748B;margin-top:12px;"></div>
+</section>
+
+<section style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px 0;flex-wrap:wrap;">
+    <div><h2 style="font-size:15px;color:#1E293B;margin:0;">Ticket audit queue</h2><p style="font-size:12px;color:#64748B;margin:4px 0 0;">Recent saved tickets and their current review state.</p></div>
+    <a href="history.html" style="font-size:12px;color:#2563EB;text-decoration:none;font-weight:600;">View audit history →</a>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px 0;flex-wrap:wrap;">
+    <div id="tabRow" style="display:flex;gap:4px;overflow:auto;">
+      <button id="tab-all" type="button" onclick="selectFilter('all')">All</button><button id="tab-flagged" type="button" onclick="selectFilter('flagged')">Flagged</button><button id="tab-cleared" type="button" onclick="selectFilter('cleared')">Cleared</button><button id="tab-review" type="button" onclick="selectFilter('review')">In Review</button>
+    </div>
+    <input id="ticketSearch" type="search" placeholder="Search ticket ID…" oninput="onSearchInput()" style="padding:8px 11px;border-radius:8px;border:1px solid #CBD5E1;background:#FFFFFF;font-size:13px;width:min(240px,100%);">
+  </div>
+  <div style="overflow-x:auto;margin-top:10px;">
+    <div style="min-width:980px;">
+      <div style="display:grid;grid-template-columns:90px 60px 1fr 95px 130px 70px 100px 150px 80px;padding:12px 20px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#64748B;font-weight:700;border-bottom:1px solid #E2E8F0;">
+        <div>Ticket ID</div><div>Type</div><div>Summary</div><div>Requested</div><div>Auditor</div><div>Score</div><div>Status</div><div>Alert</div><div></div>
+      </div>
+      <div id="ticketRows"></div>
+    </div>
+  </div>
+</section>
+
+<footer style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:2px;color:#94A3B8;font-size:11px;">
+  <span>Audit data reflects records stored by the service.</span><a href="legacy-operations.html" style="color:#64748B;text-decoration:none;border-bottom:1px dashed #CBD5E1;">View legacy process</a>
+</footer>

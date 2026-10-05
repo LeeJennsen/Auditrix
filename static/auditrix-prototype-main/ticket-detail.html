@@ -1,0 +1,289 @@
+<!-- HEADER -->
+    <div>
+      <a href="index.html" style="font-size: 12.5px; color: #2563EB; text-decoration: none;">&larr; Back to Dashboard</a>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 10px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <h1 class="mono" style="font-size: 24px; color: #1E293B;">CR-0345</h1>
+            <span style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #FDF3E6; color: #B45309;">Flagged for Review</span>
+            <span style="font-size: 12px; color: #B4432F; font-weight: 600;">Flagged 2 days ago</span>
+          </div>
+          <div style="font-size: 14px; color: #64748B; margin-top: 6px;">Change Request &middot; Rollback plan sign-off missing</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUTOMATIC NOTIFICATION -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 18px 22px; display: flex; gap: 14px; align-items: flex-start;">
+      <div style="width: 34px; height: 34px; border-radius: 8px; background: #4A154B; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #FFFFFF; font-weight: 700; font-size: 16px;">#</div>
+      <div style="flex-grow: 1;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="font-size: 13px; font-weight: 700; color: #1E293B;">#audit-governance</div>
+          <span style="font-size: 11px; color: #64748B;">Audit Bot &middot; sent 2 days ago</span>
+          <span style="margin-left: auto; display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #FBEAE6; color: #B4432F;">Critical: Immediate</span>
+        </div>
+        <div style="font-size: 13.5px; color: #334155; margin-top: 6px; line-height: 1.5;">&#128308; <strong>CR-0345</strong> flagged: Rollback Plan missing (critical). <span style="color: #1264A3;">@ahmad.rahman</span> please review before end of day.</div>
+        <div style="font-size: 11px; color: #64748B; margin-top: 8px;">Sent automatically the moment the critical-override rule fired; no one has to remember to check the queue. If unacknowledged after 4 hours, it re-routes automatically to whoever has the fewest open flags (currently Ong Wei Jian, 0 open).</div>
+      </div>
+    </div>
+
+    <!-- WHY WAS THIS FLAGGED -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
+      <button onclick="toggleWhyFlagged()" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 22px; background: transparent; border: none; text-align: left; font-family: 'Times New Roman', Times, serif;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 28px; height: 28px; border-radius: 7px; background: #FDF3E6; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2 1.7-2 3.5"/><path d="M12 17h.01"/></svg>
+          </div>
+          <div style="font-size: 14px; font-weight: 600; color: #1E293B;">Why was this flagged?</div>
+        </div>
+        <svg id="whyFlaggedChevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" style="transition: transform .2s ease; flex-shrink: 0;"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div id="whyFlaggedBody" style="display: none; padding: 0 22px 20px;">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; gap: 10px; align-items: flex-start; background: #F8FAFC; border-radius: 8px; padding: 10px 14px;">
+            <span style="color: #B4432F; font-size: 13px; line-height: 1.6;">&#8226;</span>
+            <div style="font-size: 13px; color: #334155; line-height: 1.6;"><strong style="color: #1E293B;">Rollback Plan Attached is "Not found"</strong> &middot; Rollback Plan Present is a Critical criterion (scored 20%), and a missing rollback procedure fails the ticket outright, regardless of the combined score.</div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: flex-start; background: #F8FAFC; border-radius: 8px; padding: 10px 14px;">
+            <span style="color: #B4432F; font-size: 13px; line-height: 1.6;">&#8226;</span>
+            <div style="font-size: 13px; color: #334155; line-height: 1.6;"><strong style="color: #1E293B;">Post-Implementation Review is "Not found" at closure</strong> &middot; also a Critical criterion (scored 0%); its absence alone routes the ticket to human review under the critical-override rule.</div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: flex-start; background: #F8FAFC; border-radius: 8px; padding: 10px 14px;">
+            <span style="color: #B45309; font-size: 13px; line-height: 1.6;">&#8226;</span>
+            <div style="font-size: 13px; color: #334155; line-height: 1.6;"><strong style="color: #1E293B;">Combined AI Score of 61/100 is below the 80-point auto-flag threshold</strong> applied to every CR ticket, compounding the two critical failures above.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #E2E8F0; flex-wrap: wrap;">
+          <div style="font-size: 12px; color: #64748B; margin-right: auto;">Auditor feedback on this flag, used to recalibrate the rubric during the pilot:</div>
+          <button id="agreeFlagBtn" onclick="agreeWithFlag()" style="padding: 9px 14px; border-radius: 8px; border: 1px solid #CBD5E1; background: #FFFFFF; font-size: 12.5px; font-weight: 500; color: #334155; cursor: pointer;">Agree with AI Flag</button>
+          <button id="overrideFlagBtn" onclick="showOverridePanel()" style="padding: 9px 14px; border-radius: 8px; border: none; background: #2563EB; color: #FFFFFF; font-size: 12.5px; font-weight: 500; cursor: pointer;">Override: Mark as Compliant</button>
+        </div>
+
+        <div id="overridePanel" style="display: none; margin-top: 12px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 14px 16px;">
+          <div style="font-size: 12.5px; font-weight: 600; color: #1E293B; margin-bottom: 10px;">Why are you overriding this flag? A reason is required so it can be used to recalibrate the rubric.</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button id="reasonBtn-rollback" onclick="selectOverrideReason('rollback')" style="padding: 8px 14px; border-radius: 999px; border: 1px solid #CBD5E1; background: #FFFFFF; font-size: 12.5px; font-weight: 500; color: #334155; cursor: pointer;">Rollback plan documented elsewhere</button>
+            <button id="reasonBtn-approver" onclick="selectOverrideReason('approver')" style="padding: 8px 14px; border-radius: 999px; border: 1px solid #CBD5E1; background: #FFFFFF; font-size: 12.5px; font-weight: 500; color: #334155; cursor: pointer;">Approver separation confirmed manually</button>
+            <button id="reasonBtn-other" onclick="selectOverrideReason('other')" style="padding: 8px 14px; border-radius: 999px; border: 1px solid #CBD5E1; background: #FFFFFF; font-size: 12.5px; font-weight: 500; color: #334155; cursor: pointer;">Other</button>
+          </div>
+          <div id="otherReasonWrap" style="display: none; margin-top: 10px;">
+            <input id="otherReasonText" type="text" oninput="onOtherReasonInput()" placeholder="Describe the reason for overriding this flag..." style="width: 100%; box-sizing: border-box; padding: 9px 12px; border-radius: 8px; border: 1px solid #CBD5E1; background: #FFFFFF; font-size: 12.5px; color: #334155; font-family: 'Times New Roman', Times, serif;">
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center; margin-top: 12px;">
+            <button id="submitOverrideBtn" onclick="submitOverride()" disabled style="padding: 9px 14px; border-radius: 8px; border: none; background: #2563EB; color: #FFFFFF; font-size: 12.5px; font-weight: 500; cursor: not-allowed; opacity: 0.5;">Submit Override</button>
+            <button onclick="cancelOverride()" style="padding: 9px 14px; border-radius: 8px; border: 1px solid #CBD5E1; background: #FFFFFF; font-size: 12.5px; font-weight: 500; color: #334155; cursor: pointer;">Cancel</button>
+          </div>
+        </div>
+
+        <div id="overrideFeedback" style="margin-top: 10px;"></div>
+      </div>
+    </div>
+
+    <!-- PILLAR 1: AUTOMATED DATA EXTRACTION -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 22px 24px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+        <div style="width: 28px; height: 28px; border-radius: 7px; background: #EAF4EF; display: flex; align-items: center; justify-content: center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E7F4D" stroke-width="2.5"><path d="M4 4h16v16H4z"/><path d="M9 9h6v6H9z"/></svg>
+        </div>
+        <div style="font-size: 14px; font-weight: 600; color: #1E293B;">1. Automated Data Extraction</div>
+        <div style="font-size: 12px; color: #64748B; margin-left: auto;">Pulled directly from ticketing system &middot; 0 manual re-entry</div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;">
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 0.03em;">Requester (Login ID)</div>
+          <div style="font-size: 13.5px; font-weight: 600; margin-top: 4px; color: #1E293B;">Muhammad Ayman bin Razak (Ops)</div>
+          <div class="mono" style="font-size: 11px; color: #64748B; margin-top: 2px;">EMP-2291</div>
+        </div>
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 0.03em;">Change Window</div>
+          <div style="font-size: 13.5px; font-weight: 600; margin-top: 4px; color: #1E293B;">22 Sep, 11:00 PM</div>
+        </div>
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 0.03em;">Approver (Login ID)</div>
+          <div style="font-size: 13.5px; font-weight: 600; margin-top: 4px; color: #1E293B;">Tan Chin Hoe</div>
+          <div class="mono" style="font-size: 11px; color: #1E7F4D; margin-top: 2px;">EMP-1044 &middot; different ID &#10003;</div>
+        </div>
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 0.03em;">Closure Date</div>
+          <div style="font-size: 13.5px; font-weight: 600; margin-top: 4px; color: #1E293B;">25 Sep, 2:14 PM</div>
+        </div>
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 0.03em;">Attachments</div>
+          <div style="font-size: 13.5px; font-weight: 600; margin-top: 4px; color: #1E293B;">3 files</div>
+        </div>
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 0.03em;">Linked Incidents</div>
+          <div style="font-size: 13.5px; font-weight: 600; margin-top: 4px; color: #1E293B;">None</div>
+        </div>
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 0.03em;">Rollback Plan Attached</div>
+          <div style="font-size: 13.5px; font-weight: 600; margin-top: 4px; color: #B4432F;">Not found</div>
+        </div>
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 0.03em;">Post-Implementation Review</div>
+          <div style="font-size: 13.5px; font-weight: 600; margin-top: 4px; color: #B4432F;">Not found</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PILLAR 2: REAL-TIME MONITORING -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 22px 24px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
+        <div style="width: 28px; height: 28px; border-radius: 7px; background: #EAF4EF; display: flex; align-items: center; justify-content: center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E7F4D" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <div style="font-size: 14px; font-weight: 600; color: #1E293B;">2. Real-Time Monitoring Timeline</div>
+        <div style="font-size: 12px; color: #64748B; margin-left: auto;">Flagged while the ticket was still open, not after closure</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0;">
+
+        <div style="display: flex; gap: 14px;">
+          <div style="width: 76px; flex-shrink: 0; font-size: 12px; color: #64748B; padding-top: 2px;">Day 0</div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 9px; height: 9px; border-radius: 999px; background: #94A3B8;"></div>
+            <div style="width: 2px; flex-grow: 1; background: #E2E8F0; min-height: 28px;"></div>
+          </div>
+          <div style="padding-bottom: 20px; font-size: 13.5px; color: #334155;">Ticket opened &middot; change request logged</div>
+        </div>
+
+        <div style="display: flex; gap: 14px;">
+          <div style="width: 76px; flex-shrink: 0; font-size: 12px; color: #64748B; padding-top: 2px;">Day 1</div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 9px; height: 9px; border-radius: 999px; background: #94A3B8;"></div>
+            <div style="width: 2px; flex-grow: 1; background: #E2E8F0; min-height: 28px;"></div>
+          </div>
+          <div style="padding-bottom: 20px; font-size: 13.5px; color: #334155;">Change window scheduled &amp; confirmed</div>
+        </div>
+
+        <div style="display: flex; gap: 14px;">
+          <div style="width: 76px; flex-shrink: 0; font-size: 12px; color: #B45309; padding-top: 2px; font-weight: 600;">Day 2</div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 9px; height: 9px; border-radius: 999px; background: #E39A3F;"></div>
+            <div style="width: 2px; flex-grow: 1; background: #E2E8F0; min-height: 28px;"></div>
+          </div>
+          <div style="padding-bottom: 20px; font-size: 13.5px; color: #1E293B; font-weight: 600;">&#9888; Rollback plan field detected empty, auto-flagged in real time</div>
+        </div>
+
+        <div style="display: flex; gap: 14px;">
+          <div style="width: 76px; flex-shrink: 0; font-size: 12px; color: #64748B; padding-top: 2px;">Day 3</div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 9px; height: 9px; border-radius: 999px; background: #94A3B8;"></div>
+            <div style="width: 2px; flex-grow: 1; background: #E2E8F0; min-height: 28px;"></div>
+          </div>
+          <div style="padding-bottom: 20px; font-size: 13.5px; color: #334155;">Approver sign-off recorded (Tan Chin Hoe)</div>
+        </div>
+
+        <div style="display: flex; gap: 14px;">
+          <div style="width: 76px; flex-shrink: 0; font-size: 12px; color: #64748B; padding-top: 2px;">Day 4</div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 9px; height: 9px; border-radius: 999px; background: #94A3B8;"></div>
+            <div style="width: 2px; flex-grow: 1; background: #E2E8F0; min-height: 28px;"></div>
+          </div>
+          <div style="padding-bottom: 20px; font-size: 13.5px; color: #334155;">Ticket closed by requester</div>
+        </div>
+
+        <div style="display: flex; gap: 14px;">
+          <div style="width: 76px; flex-shrink: 0; font-size: 12px; color: #B4432F; padding-top: 2px; font-weight: 600;">Day 4</div>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 9px; height: 9px; border-radius: 999px; background: #C25A44;"></div>
+          </div>
+          <div style="font-size: 13.5px; color: #1E293B; font-weight: 600;">&#9888; Post-implementation review still missing at closure, escalated to audit queue</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PILLAR 3: ADVANCED ANALYTICS -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 22px 24px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
+        <div style="width: 28px; height: 28px; border-radius: 7px; background: #EAF4EF; display: flex; align-items: center; justify-content: center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E7F4D" stroke-width="2.5"><path d="M3 3v18h18"/><path d="M7 15l4-6 4 3 5-8"/></svg>
+        </div>
+        <div style="font-size: 14px; font-weight: 600; color: #1E293B;">3. Advanced Analytics: AI Scoring Breakdown</div>
+        <div style="font-size: 12px; color: #64748B; margin-left: auto;">Same rubric applied to every ticket, every time</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 190px; font-size: 13px; color: #334155;">Documentation Completeness</div>
+          <div style="flex-grow: 1; height: 8px; background: #E2E8F0; border-radius: 999px; overflow: hidden;">
+            <div style="width: 58%; height: 100%; background: #E39A3F;"></div>
+          </div>
+          <div class="mono" style="width: 40px; text-align: right; font-size: 13px; font-weight: 600; color: #1E293B;">58%</div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 190px; font-size: 13px; color: #334155;">Approval Trail</div>
+          <div style="flex-grow: 1; height: 8px; background: #E2E8F0; border-radius: 999px; overflow: hidden;">
+            <div style="width: 95%; height: 100%; background: #4FA187;"></div>
+          </div>
+          <div class="mono" style="width: 40px; text-align: right; font-size: 13px; font-weight: 600; color: #1E293B;">95%</div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 190px; font-size: 13px; color: #334155;">Rollback Plan Present</div>
+          <div style="flex-grow: 1; height: 8px; background: #E2E8F0; border-radius: 999px; overflow: hidden;">
+            <div style="width: 20%; height: 100%; background: #C25A44;"></div>
+          </div>
+          <div class="mono" style="width: 40px; text-align: right; font-size: 13px; font-weight: 600; color: #B4432F;">20%</div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 190px; font-size: 13px; color: #334155;">Post-Implementation Review</div>
+          <div style="flex-grow: 1; height: 8px; background: #E2E8F0; border-radius: 999px; overflow: hidden;">
+            <div style="width: 4%; height: 100%; background: #C25A44;"></div>
+          </div>
+          <div class="mono" style="width: 40px; text-align: right; font-size: 13px; font-weight: 600; color: #B4432F;">0%</div>
+        </div>
+
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #64748B; line-height: 1.5;">
+          <strong style="color: #1E293B;">How PIR is verified, not just self-reported:</strong> a filed PIR is cross-checked against linked incident tickets opened on the same system in the 7 days after closure; a "no issues" claim that's contradicted by a new incident is auto re-flagged, and requires an evidence attachment rather than a free-text claim.
+        </div>
+
+      </div>
+
+      <div style="display: flex; gap: 14px; padding-top: 16px; border-top: 1px solid #E2E8F0;">
+        <div style="background: #FDF3E6; border-radius: 10px; padding: 14px 18px; flex: 1;">
+          <div style="font-size: 11px; color: #8A6A3D; text-transform: uppercase; letter-spacing: 0.03em;">Combined AI Score</div>
+          <div class="mono" style="font-size: 26px; font-weight: 700; color: #B45309; margin-top: 4px;">61 / 100</div>
+          <div style="font-size: 12px; color: #8A6A3D; margin-top: 2px;">Below 80 threshold &rarr; auto-routed to human review</div>
+        </div>
+
+        <div style="background: #F1F5F9; border-radius: 10px; padding: 14px 18px; flex: 2;">
+          <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 8px;">Consistency vs. Manual Audit History (this ticket type)</div>
+          <div style="display: flex; gap: 18px; align-items: flex-end;">
+            <div style="text-align: center;">
+              <div class="mono" style="font-size: 15px; font-weight: 600; color: #64748B;">72</div>
+              <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">Auditor A</div>
+            </div>
+            <div style="text-align: center;">
+              <div class="mono" style="font-size: 15px; font-weight: 600; color: #64748B;">55</div>
+              <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">Auditor B</div>
+            </div>
+            <div style="text-align: center;">
+              <div class="mono" style="font-size: 15px; font-weight: 600; color: #64748B;">68</div>
+              <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">Auditor C</div>
+            </div>
+            <div style="width: 1px; height: 30px; background: #E2E8F0;"></div>
+            <div style="text-align: center;">
+              <div class="mono" style="font-size: 15px; font-weight: 700; color: #1E7F4D;">61</div>
+              <div style="font-size: 10.5px; color: #1E7F4D; margin-top: 2px; font-weight: 600;">AI (repeatable)</div>
+            </div>
+          </div>
+          <div style="font-size: 11.5px; color: #64748B; margin-top: 8px;">Same ticket, &plusmn;17-point manual variance historically; the AI applies one rubric every time.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION ROW -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between;">
+      <div style="font-size: 13px; color: #64748B;">Auditor decision: only this exception needs a human call.</div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <div id="decisionBanner" style="font-size: 12.5px; font-weight: 600; padding: 8px 12px; border-radius: 8px; background: transparent; color: transparent;"></div>
+        <button style="padding: 10px 16px; border-radius: 8px; border: 1px solid #CBD5E1; background: #FFFFFF; font-size: 13px; font-weight: 500; color: #334155; cursor: pointer;" onclick="setDecision('sent_back')">Send Back for Correction</button>
+        <button style="padding: 10px 16px; border-radius: 8px; border: none; background: #2563EB; color: #FFFFFF; font-size: 13px; font-weight: 500; cursor: pointer;" onclick="setDecision('approved')">Approve as Audited</button>
+      </div>
+    </div>

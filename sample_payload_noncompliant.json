@@ -1,0 +1,8 @@
+{
+  "ticket_id": "CR0098765",
+  "type": "CR",
+  "description": "Scheduled change to upgrade the production database cluster to a new major version.",
+  "resolution_notes": "Upgrade completed. Looks good.",
+  "closing_agent": "agent.chen",
+  "closed_at": "2026-09-22T02:10:00Z"
+}

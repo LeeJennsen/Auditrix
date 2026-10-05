@@ -1,0 +1,231 @@
+<!-- HEADER -->
+    <div>
+      <a href="index.html" style="font-size: 12.5px; color: #2563EB; text-decoration: none;">&larr; Back to Dashboard</a>
+      <h1 style="font-size: 22px; color: #1E293B; margin-top: 10px;">Consistency Analytics</h1>
+      <div style="font-size: 13.5px; color: #64748B; margin-top: 4px;">Manual auditor scores vs. AI score, across the tickets flagged for exception review this week</div>
+      <div style="font-size: 11px; color: #94A3B8; margin-top: 6px;">Illustrative sample data for this prototype, to be calibrated against real audit logs during the 30-day pilot.</div>
+    </div>
+
+    <!-- SECTION: PROVEN BASELINE -->
+    <div style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
+      <span style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 700; background: #E2E8F0; color: #64748B; text-transform: uppercase; letter-spacing: 0.04em;">Proven Baseline (Evidence)</span>
+      <div style="font-size: 12px; color: #64748B;">Measured from actual manual audit history on these tickets</div>
+    </div>
+
+    <!-- BAR CHART -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 28px 32px 22px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+        <div>
+          <div style="font-size: 15px; font-weight: 600; color: #1E293B;">Score spread per ticket: three manual auditors vs. AI</div>
+          <div style="font-size: 12px; color: #64748B; margin-top: 2px;">Lower spread = more consistent outcomes across whoever reviews the ticket &middot; n = 4 flagged tickets, week of Sep 22</div>
+        </div>
+        <div style="display: flex; gap: 18px; padding-top: 2px;">
+          <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #64748B;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #94A3B8; border: 1px solid #64748B; display: inline-block;"></span> Manual auditor (A / B / C)</div>
+          <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #64748B;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #1E7F4D; display: inline-block;"></span> AI score</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 14px; margin-top: 28px;">
+
+        <!-- Y AXIS -->
+        <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; height: 320px; padding-bottom: 26px; width: 28px; flex-shrink: 0;">
+          <span class="mono" style="font-size: 11px; color: #94A3B8;">100</span>
+          <span class="mono" style="font-size: 11px; color: #94A3B8;">80</span>
+          <span class="mono" style="font-size: 11px; color: #94A3B8;">60</span>
+          <span class="mono" style="font-size: 11px; color: #94A3B8;">40</span>
+          <span class="mono" style="font-size: 11px; color: #94A3B8;">20</span>
+          <span class="mono" style="font-size: 11px; color: #94A3B8;">0</span>
+        </div>
+
+        <!-- PLOT AREA -->
+        <div style="flex-grow: 1;">
+          <div style="position: relative; height: 320px; padding-bottom: 26px;">
+            <!-- gridlines every 20 points (64px per 20 on a 320px scale) -->
+            <div style="position: absolute; left: 0; right: 0; top: 0; bottom: 26px; background-image: repeating-linear-gradient(to top, #E2E8F0 0, #E2E8F0 1px, transparent 1px, transparent 64px); background-position: left bottom;"></div>
+
+            <!-- bars, aligned to the gridline background -->
+            <div style="position: absolute; left: 0; right: 0; bottom: 26px; height: 320px; display: flex; align-items: flex-end; gap: 44px; padding: 0 20px;">
+
+              <!-- Ticket group: CR-0345 -->
+              <div style="display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end;">
+                <div style="display: flex; align-items: flex-end; gap: 7px;">
+                  <div style="width: 26px; height: 230.4px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">72</span></div>
+                  <div style="width: 26px; height: 176px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">55</span></div>
+                  <div style="width: 26px; height: 217.6px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">68</span></div>
+                  <div style="width: 26px; height: 195.2px; background: #1E7F4D; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #1E7F4D; font-weight: 700;" class="mono">61</span></div>
+                </div>
+              </div>
+
+              <!-- Ticket group: CR-0348 -->
+              <div style="display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end;">
+                <div style="display: flex; align-items: flex-end; gap: 7px;">
+                  <div style="width: 26px; height: 140.8px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">44</span></div>
+                  <div style="width: 26px; height: 211.2px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">66</span></div>
+                  <div style="width: 26px; height: 160px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">50</span></div>
+                  <div style="width: 26px; height: 185.6px; background: #1E7F4D; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #1E7F4D; font-weight: 700;" class="mono">58</span></div>
+                </div>
+              </div>
+
+              <!-- Ticket group: SR-1197 -->
+              <div style="display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end;">
+                <div style="display: flex; align-items: flex-end; gap: 7px;">
+                  <div style="width: 26px; height: 153.6px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">48</span></div>
+                  <div style="width: 26px; height: 112px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">35</span></div>
+                  <div style="width: 26px; height: 204.8px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">64</span></div>
+                  <div style="width: 26px; height: 172.8px; background: #1E7F4D; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #1E7F4D; font-weight: 700;" class="mono">54</span></div>
+                </div>
+              </div>
+
+              <!-- Ticket group: INC-2056 -->
+              <div style="display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end;">
+                <div style="display: flex; align-items: flex-end; gap: 7px;">
+                  <div style="width: 26px; height: 204.8px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">64</span></div>
+                  <div style="width: 26px; height: 249.6px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">78</span></div>
+                  <div style="width: 26px; height: 198.4px; background: #94A3B8; border: 1px solid #64748B; border-bottom: none; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748B;" class="mono">62</span></div>
+                  <div style="width: 26px; height: 220.8px; background: #1E7F4D; border-radius: 3px 3px 0 0; position: relative;"><span style="position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #1E7F4D; font-weight: 700;" class="mono">69</span></div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- x axis line -->
+            <div style="position: absolute; left: 0; right: 0; bottom: 26px; height: 1px; background: #CBD5E1;"></div>
+          </div>
+
+          <!-- x axis labels -->
+          <div style="display: flex; gap: 44px; padding: 0 20px; margin-top: -26px;">
+            <div style="flex: 1; text-align: center;">
+              <div class="mono" style="font-size: 12.5px; font-weight: 600; color: #1E293B;">CR-0345</div>
+              <div style="font-size: 11px; color: #B45309; font-weight: 600;">&plusmn;17 spread</div>
+            </div>
+            <div style="flex: 1; text-align: center;">
+              <div class="mono" style="font-size: 12.5px; font-weight: 600; color: #1E293B;">CR-0348</div>
+              <div style="font-size: 11px; color: #B45309; font-weight: 600;">&plusmn;22 spread</div>
+            </div>
+            <div style="flex: 1; text-align: center;">
+              <div class="mono" style="font-size: 12.5px; font-weight: 600; color: #1E293B;">SR-1197</div>
+              <div style="font-size: 11px; color: #B45309; font-weight: 600;">&plusmn;29 spread</div>
+            </div>
+            <div style="flex: 1; text-align: center;">
+              <div class="mono" style="font-size: 12.5px; font-weight: 600; color: #1E293B;">INC-2056</div>
+              <div style="font-size: 11px; color: #B45309; font-weight: 600;">&plusmn;14 spread</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY CALLOUT: EVIDENCE -->
+    <div style="display: flex; gap: 16px;">
+      <div style="flex: 1; background: #FDF3E6; border-radius: 12px; padding: 18px 20px;">
+        <div style="font-size: 11px; color: #8A6A3D; text-transform: uppercase; letter-spacing: 0.03em;">Average manual auditor spread</div>
+        <div class="mono" style="font-size: 26px; font-weight: 700; color: #B45309; margin-top: 4px;">&plusmn;20.5 pts</div>
+        <div style="font-size: 12px; color: #8A6A3D; margin-top: 2px;">Across the 4 sampled flagged tickets this week</div>
+      </div>
+    </div>
+
+    <!-- SECTION: PILOT PROJECTION -->
+    <div style="display: flex; align-items: center; gap: 10px; margin-top: 14px;">
+      <span style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 700; background: rgba(37,99,235,0.16); color: #2563EB; text-transform: uppercase; letter-spacing: 0.04em; border: 1px solid rgba(37,99,235,0.4);">Pilot Projection (Assumption)</span>
+      <div style="font-size: 12px; color: #64748B;">Projected AI-scoring behavior, to be validated over the 30-day pilot</div>
+    </div>
+
+    <div style="display: flex; gap: 16px;">
+      <div style="flex: 1; background: #E8F5EE; border-radius: 12px; padding: 18px 20px;">
+        <div style="font-size: 11px; color: #1E7F4D; text-transform: uppercase; letter-spacing: 0.03em;">AI scoring spread</div>
+        <div class="mono" style="font-size: 26px; font-weight: 700; color: #1E7F4D; margin-top: 4px;">0 pts</div>
+        <div style="font-size: 12px; color: #1E7F4D; margin-top: 2px;">Same rubric, same weights, every single run</div>
+      </div>
+      <div style="flex: 1; background: #E8F5EE; border-radius: 12px; padding: 18px 20px;">
+        <div style="font-size: 11px; color: #1E7F4D; text-transform: uppercase; letter-spacing: 0.03em;">AI-Human Agreement Rate</div>
+        <div class="mono" style="font-size: 26px; font-weight: 700; color: #1E7F4D; margin-top: 4px;">91%</div>
+        <div style="font-size: 12px; color: #1E7F4D; margin-top: 2px;">Auditors agreeing with the AI flag, across overrides logged on the ticket detail page</div>
+        <div style="font-size: 11px; color: #1E7F4D; margin-top: 8px; padding-top: 8px; border-top: 1px solid #BEE3CE;">Illustrative example: most cited override reason so far is "rollback plan documented elsewhere"</div>
+      </div>
+    </div>
+
+    <!-- PROJECTED IMPACT (ROI) -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 22px 24px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap;">
+        <div style="font-size: 13px; font-weight: 600; color: #1E293B;">Projected Impact</div>
+        <span style="display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: #DBEAFE; color: #2563EB; text-transform: uppercase; letter-spacing: 0.03em;">Illustrative Estimate</span>
+      </div>
+      <div style="font-size: 12.5px; color: #64748B; margin-bottom: 16px;">Simple arithmetic using the baseline and volume numbers already shown in this prototype, not a guaranteed figure</div>
+
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 16px;">
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div class="mono" style="font-size: 20px; font-weight: 700; color: #1E293B;">45 min</div>
+          <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Manual review time per ticket (legacy baseline)</div>
+        </div>
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div class="mono" style="font-size: 20px; font-weight: 700; color: #1E293B;">10% &rarr; 100%</div>
+          <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Manual sampling coverage vs. automated coverage</div>
+        </div>
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px;">
+          <div class="mono" style="font-size: 20px; font-weight: 700; color: #1E293B;">~223 / day</div>
+          <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Tickets previously unreviewed (90% of today's 248)</div>
+        </div>
+        <div style="background: #DBEAFE; border-radius: 8px; padding: 12px 14px;">
+          <div class="mono" style="font-size: 20px; font-weight: 700; color: #1D4ED8;">~167 hrs / day</div>
+          <div style="font-size: 11px; color: #1D4ED8; margin-top: 2px;">Estimated manual hours to check those, at the 45-min baseline</div>
+        </div>
+      </div>
+
+      <div style="background: #F1F5F9; border-radius: 8px; padding: 14px 16px; font-size: 13px; color: #334155; line-height: 1.6;">
+        Under the legacy manual process, auditors could only randomly sample 10% of tickets, at an average of 45 minutes each (see <a href="legacy-operations.html" style="color: #2563EB;">Legacy Process</a>). At today's volume of 248 tickets processed, that means about 223 tickets a day (90% of volume) received no audit at all. Checking those 223 tickets by hand, at the same 45-minute baseline, would take an estimated 167 hours of manual work per day, more hours than any realistic auditor headcount could cover. This platform scores all 248 tickets automatically instead, so that full coverage happens with zero added manual review time, and auditors only spend time on the 37 tickets flagged as genuine exceptions today.
+      </div>
+      <div style="font-size: 11px; color: #94A3B8; margin-top: 8px;">Illustrative estimate based on the legacy baseline (45 min/ticket, 10% sampling) and today's ticket volume shown above; actual per-ticket time and volume to be confirmed during the 30-day pilot.</div>
+    </div>
+
+    <!-- RISK TREND CHART (PILOT SIMULATION) -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 22px 24px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 2px; flex-wrap: wrap;">
+        <div style="font-size: 15px; font-weight: 600; color: #1E293B;">Flag Rate Over Last 6 Weeks</div>
+        <span style="display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 10.5px; font-weight: 700; background: rgba(37,99,235,0.16); color: #2563EB; text-transform: uppercase; letter-spacing: 0.03em;">Pilot Simulation</span>
+      </div>
+      <div style="font-size: 12px; color: #64748B; margin-bottom: 4px;">Share of tickets auto-flagged for exception review, week over week, as the rubric and thresholds mature</div>
+      <div style="font-size: 11px; color: #94A3B8; margin-bottom: 16px;">Illustrative pilot-simulation data, not yet observed; to be replaced with actual weekly flag rates once the 30-day pilot begins.</div>
+
+      <svg viewBox="0 0 560 200" width="100%" height="200" style="display: block; max-width: 620px;">
+        <!-- gridlines -->
+        <line x1="40" y1="48" x2="530" y2="48" stroke="#E2E8F0" stroke-width="1"/>
+        <line x1="40" y1="104" x2="530" y2="104" stroke="#E2E8F0" stroke-width="1"/>
+        <line x1="40" y1="160" x2="530" y2="160" stroke="#CBD5E1" stroke-width="1"/>
+        <text x="34" y="51" text-anchor="end" font-size="10" fill="#94A3B8" font-family="'Courier New', Courier, monospace">20%</text>
+        <text x="34" y="107" text-anchor="end" font-size="10" fill="#94A3B8" font-family="'Courier New', Courier, monospace">10%</text>
+        <text x="34" y="163" text-anchor="end" font-size="10" fill="#94A3B8" font-family="'Courier New', Courier, monospace">0%</text>
+
+        <!-- trend line -->
+        <polyline points="40,36.8 138,53.6 236,64.8 334,76 432,87.2 530,98.4" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- points + value labels -->
+        <circle cx="40" cy="36.8" r="4" fill="#2563EB"/>
+        <text x="40" y="26" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4ED8" font-family="'Courier New', Courier, monospace">22%</text>
+        <circle cx="138" cy="53.6" r="4" fill="#2563EB"/>
+        <text x="138" y="43" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4ED8" font-family="'Courier New', Courier, monospace">19%</text>
+        <circle cx="236" cy="64.8" r="4" fill="#2563EB"/>
+        <text x="236" y="54" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4ED8" font-family="'Courier New', Courier, monospace">17%</text>
+        <circle cx="334" cy="76" r="4" fill="#2563EB"/>
+        <text x="334" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4ED8" font-family="'Courier New', Courier, monospace">15%</text>
+        <circle cx="432" cy="87.2" r="4" fill="#2563EB"/>
+        <text x="432" y="77" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4ED8" font-family="'Courier New', Courier, monospace">13%</text>
+        <circle cx="530" cy="98.4" r="4" fill="#2563EB"/>
+        <text x="530" y="88" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4ED8" font-family="'Courier New', Courier, monospace">11%</text>
+
+        <!-- x axis labels -->
+        <text x="40" y="182" text-anchor="middle" font-size="11" fill="#64748B">Week 1</text>
+        <text x="138" y="182" text-anchor="middle" font-size="11" fill="#64748B">Week 2</text>
+        <text x="236" y="182" text-anchor="middle" font-size="11" fill="#64748B">Week 3</text>
+        <text x="334" y="182" text-anchor="middle" font-size="11" fill="#64748B">Week 4</text>
+        <text x="432" y="182" text-anchor="middle" font-size="11" fill="#64748B">Week 5</text>
+        <text x="530" y="182" text-anchor="middle" font-size="11" fill="#64748B">Week 6</text>
+      </svg>
+
+      <div style="background: #F1F5F9; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #64748B; line-height: 1.5; margin-top: 10px;">
+        <strong style="color: #1E293B;">Why this trend is expected to decline:</strong> as auditors correct the specific gaps the AI catches (missing rollback plans, absent PIRs), fewer tickets of the same type repeat the same failure, so the flag rate should fall as the pilot matures. This chart is a projection, not a measured result.
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 16px 20px; font-size: 13px; color: #334155; line-height: 1.5;">
+      This is the direct answer to the brief's core problem: <strong>different auditors reaching different conclusions on the same ticket.</strong> The AI doesn't remove human judgment from the process; it removes the variance in how consistently that judgment gets applied, so every auditor's queue is scored against the same standard before a human ever opens the ticket.
+    </div>

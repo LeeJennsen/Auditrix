@@ -1,0 +1,8 @@
+{
+  "ticket_id": "INC0065312",
+  "type": "INC",
+  "description": "Several users cannot print invoices from the shared finance printer.",
+  "resolution_notes": "Restarted the printer. Seems fine now.",
+  "closing_agent": "agent.farah",
+  "closed_at": "2026-09-22T10:15:00Z"
+}

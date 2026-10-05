@@ -1,0 +1,8 @@
+{
+  "ticket_id": "INC0012345",
+  "type": "INC",
+  "description": "Users in the Kuala Lumpur office report VPN disconnects every 10 minutes on managed laptops, interrupting access to the finance application.",
+  "resolution_notes": "Root cause: VPN client 4.2 conflicted with the new firewall policy. Remediation: upgraded affected laptops to client 4.5.1, cleared cached credentials, and reconnected each device. Validation: monitored VPN-Gateway-02 for 30 minutes; sessions stayed active and finance application access succeeded. Business impact: 18 finance users could not work during the 25-minute interruption. The requester confirmed recovery at 14:32. This was an isolated event with no earlier related incidents; a problem record was not applicable.",
+  "closing_agent": "agent.rivera",
+  "closed_at": "2026-09-22T14:35:00Z"
+}

@@ -1,0 +1,8 @@
+{
+  "ticket_id": "SR0042187",
+  "type": "SR",
+  "description": "Finance analyst requests read-only access to the monthly revenue dashboard.",
+  "resolution_notes": "Fulfilled: granted read-only access to the Revenue-Monthly dashboard for the analyst's finance account; no other systems or write permissions were added. Approval: manager Lina Tan approved on 2026-09-21, recorded in approval AC-8821. Completed within the 2-business-day SLA (requested 2026-09-21 09:10, granted 2026-09-21 11:42). The requester signed in and confirmed the dashboard opened successfully at 12:05.",
+  "closing_agent": "agent.nadia",
+  "closed_at": "2026-09-21T12:10:00Z"
+}

@@ -1,0 +1,22 @@
+services:
+  audit-platform:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - ANTHROPIC_WORKSPACE_ID=${ANTHROPIC_WORKSPACE_ID:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - LLM_PROVIDER=${LLM_PROVIDER:-mock}
+      - GEMINI_MODEL=${GEMINI_MODEL:-}
+      - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-}
+      - GEMINI_FALLBACK_MODEL=${GEMINI_FALLBACK_MODEL:-}
+      - GEMINI_THINKING_LEVEL=${GEMINI_THINKING_LEVEL:-low}
+      - AUDIT_DB_PATH=/data/audit.sqlite3
+    volumes:
+      - audit_data:/data
+
+volumes:
+  audit_data:

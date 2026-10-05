@@ -1,0 +1,8 @@
+{
+  "ticket_id": "CR0073041",
+  "type": "CR",
+  "description": "Approved maintenance to upgrade the customer portal database from version 14 to 15.",
+  "resolution_notes": "Implemented the approved database upgrade plan during the 01:00-01:30 UTC window on 2026-09-20. CAB approval CAB-2026-441 was recorded on 2026-09-18. No plan deviations occurred. Post-change validation passed: application health endpoint returned 200, read/write smoke tests passed, and replication lag returned to baseline. The rollback plan was ready but not invoked. Actual customer impact was 4 minutes of read-only mode, within the approved 5-minute impact allowance. Service owner Maya Lim confirmed normal portal operation at 01:24 UTC.",
+  "closing_agent": "agent.owen",
+  "closed_at": "2026-09-20T01:30:00Z"
+}

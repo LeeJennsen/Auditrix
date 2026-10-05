@@ -1,0 +1,115 @@
+<div style="margin-bottom:18px"><a href="/auditrix-prototype-main/" style="font-size:12.5px;color:#2563EB;text-decoration:none">&larr; Back to Dashboard</a></div>
+
+  <header class="top">
+    <div class="wordmark">
+      <h1>Run AI Audit</h1>
+      <p>Audit a ticket or a selected sample batch. Choose the configured provider and review each saved result in the live queue.</p>
+    </div>
+    <div class="conn" id="connStatus">
+      <span class="dot"></span>
+      <span id="connLabel">Checking backend…</span>
+    </div>
+  </header>
+
+  <div class="demo-row">
+    <button class="pill-btn" id="loadCompliant" type="button">Load random compliant ticket</button>
+    <button class="pill-btn" id="loadNonCompliant" type="button">Load random non-compliant ticket</button>
+  </div>
+
+  <section style="margin:18px 0 26px;padding:18px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;">
+    <h2 class="panel-heading">Sample library · 18 ready-to-audit tickets</h2>
+    <p style="font-size:13px;color:#64748B;margin:0 0 12px;">Select one or more samples, choose an AI provider, and run them through the same audit API as your real tickets.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <select id="sampleSelect" multiple size="6" aria-label="Select sample tickets" style="flex:1;min-width:280px;padding:8px;border:1px solid #CBD5E1;border-radius:8px;font:inherit;"></select>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="pill-btn" id="loadSelected" type="button">Load first selected into form</button>
+        <button class="run-btn" id="runBatch" type="button" style="width:auto;margin:0;">Run selected samples</button>
+      </div>
+    </div>
+    <div id="batchStatus" role="status" style="margin-top:12px;color:#475569;font-size:13px;"></div>
+    <div id="batchResults" style="margin-top:8px;"></div>
+  </section>
+
+  <div class="grid">
+
+    <!-- Form -->
+    <div>
+      <h2 class="panel-heading">Ticket details</h2>
+      <form id="ticketForm">
+        <div class="two-col">
+          <div class="field">
+            <label for="ticket_id">Ticket ID</label>
+            <input type="text" id="ticket_id" required placeholder="INC0012345" />
+          </div>
+          <div class="field">
+            <label for="type">Type</label>
+            <select id="type" required>
+              <option value="INC">Incident (INC)</option>
+              <option value="SR">Service Request (SR)</option>
+              <option value="CR">Change Request (CR)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="description">Description</label>
+          <textarea id="description" required placeholder="What the requester originally reported…"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="resolution_notes">Resolution notes</label>
+          <textarea id="resolution_notes" required placeholder="What the closing agent documented…"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="closing_agent">Closing agent</label>
+          <input type="text" id="closing_agent" required placeholder="agent.rivera" />
+        </div>
+
+        <div class="field">
+          <label for="llm_provider">AI model</label>
+          <select id="llm_provider" required>
+            <option value="gemini">Gemini</option>
+            <option value="anthropic">Claude</option>
+            <option value="openai">ChatGPT</option>
+            <option value="mock">Demo (no API)</option>
+          </select>
+        </div>
+
+        <button class="run-btn" id="runBtn" type="submit">Run AI audit</button>
+        <div class="error-msg" id="errorMsg"></div>
+      </form>
+    </div>
+
+    <!-- Result -->
+    <div>
+      <h2 class="panel-heading">Audit result</h2>
+      <div class="result-card">
+        <div class="empty-state" id="emptyState">
+          Run an audit to see the compliance score,<br/>the reasoning behind it, and the QC decision.
+        </div>
+        <div class="result-body" id="resultBody">
+          <div class="score-row">
+            <span class="score-num" id="scoreNum">—</span>
+            <span class="score-max">/ 100</span>
+          </div>
+          <div class="score-label">Compliance score</div>
+
+          <div class="status-pill" id="statusPill">
+            <span class="dot"></span>
+            <span id="statusText">—</span>
+          </div>
+
+          <p class="reasoning-heading">Why</p>
+          <p class="reasoning-text" id="reasoningText">—</p>
+
+          <div class="meta-row">
+            <span>Ticket <b id="metaTicketId">—</b></span>
+            <span>Model <b id="metaProvider">—</b></span>
+            <span>Latency <b id="metaLatency">—</b></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
