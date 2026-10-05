@@ -43,7 +43,7 @@
         <div id="detailCount" style="font-size:12px;color:#64748B;margin:12px 0 8px;"></div>
         <div style="overflow:auto;"><table style="width:100%;min-width:790px;border-collapse:collapse;text-align:left;"><thead><tr style="font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#64748B;background:#F8FAFC;"><th style="padding:11px;border-bottom:1px solid #E2E8F0;">Ticket</th><th style="padding:11px;border-bottom:1px solid #E2E8F0;">Type / Summary</th><th style="padding:11px;border-bottom:1px solid #E2E8F0;">Score</th><th style="padding:11px;border-bottom:1px solid #E2E8F0;">Audit status</th><th style="padding:11px;border-bottom:1px solid #E2E8F0;">Audited</th><th style="padding:11px;border-bottom:1px solid #E2E8F0;"></th></tr></thead><tbody id="detailRows"></tbody></table></div>
       </section>
-      <div id="detailEmpty" style="display:none;padding:30px;text-align:center;background:#fff;border:1px solid #E2E8F0;border-radius:12px;color:#64748B;">No tickets match those filters. <a href="/audit-runner.html">Run an AI audit</a> to add another record.</div>`;
+      <div id="detailEmpty" style="display:none;padding:30px;text-align:center;background:#fff;border:1px solid #E2E8F0;border-radius:12px;color:#64748B;">No tickets match those filters. <a href="/auditrix-prototype-main/audit-runner.html">Run an AI audit</a> to add another record.</div>`;
 
     function paint() {
       const query = document.getElementById('detailSearch').value.trim().toLowerCase();
@@ -102,7 +102,7 @@
 
       ${panel(`Full ${escapeHtml(ticket.type)} SOP used for this audit`, `<pre style="white-space:pre-wrap;font:13px/1.7 inherit;color:#334155;margin:0;">${escapeHtml(rubric.trim())}</pre>`, 'Same server-side text supplied to the AI evaluator')}
 
-      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button id="exportTicketBtn" type="button" style="padding:9px 13px;border:1px solid #CBD5E1;border-radius:8px;background:#fff;cursor:pointer;">Export audit details (JSON)</button><a href="/audit-runner.html" style="padding:9px 13px;border:1px solid #CBD5E1;border-radius:8px;background:#fff;color:#1D4ED8;text-decoration:none;font-size:13px;">Run another audit</a><span id="exportMessage" role="status" style="align-self:center;font-size:12px;color:#64748B;"></span></div>`;
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button id="exportTicketBtn" type="button" style="padding:9px 13px;border:1px solid #CBD5E1;border-radius:8px;background:#fff;cursor:pointer;">Export audit details (JSON)</button><a href="/auditrix-prototype-main/audit-runner.html" style="padding:9px 13px;border:1px solid #CBD5E1;border-radius:8px;background:#fff;color:#1D4ED8;text-decoration:none;font-size:13px;">Run another audit</a><span id="exportMessage" role="status" style="align-self:center;font-size:12px;color:#64748B;"></span></div>`;
 
     const approve = document.getElementById('approveAuditBtn');
     const override = document.getElementById('overrideAuditBtn');

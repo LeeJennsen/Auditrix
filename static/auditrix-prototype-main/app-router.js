@@ -11,7 +11,7 @@
     history: { file: 'history.html', title: 'Audit History', active: 'audit-history', scripts: ['history.js'] },
     'scoring-rubric': { file: 'scoring-rubric.html', title: 'Scoring Rubric', active: 'scoring-rubric', scripts: ['scoring-rubric-page.js', 'scoring-rubric.js'] },
     'legacy-operations': { file: 'legacy-operations.html', title: 'Legacy Process', active: '', scripts: [] },
-    'audit-runner': { file: '../audit-runner.html', title: 'Run AI Audit', active: 'run-ai-audit', scripts: ['audit-runner.js'] }
+    'audit-runner': { file: 'audit-runner.html', title: 'Run AI Audit', active: 'run-ai-audit', scripts: ['audit-runner.js'] }
   };
 
   const content = document.getElementById('content-container');
