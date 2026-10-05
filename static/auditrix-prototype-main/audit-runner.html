@@ -1,4 +1,5 @@
-<div style="margin-bottom:18px"><a href="/auditrix-prototype-main/" style="font-size:12.5px;color:#2563EB;text-decoration:none">&larr; Back to Dashboard</a></div>
+<div class="view-stack audit-runner-view">
+<div class="runner-back"><a class="back-link" href="/auditrix-prototype-main/">&larr; Back to Dashboard</a></div>
 
   <header class="top">
     <div class="wordmark">
@@ -16,18 +17,15 @@
     <button class="pill-btn" id="loadNonCompliant" type="button">Load random non-compliant ticket</button>
   </div>
 
-  <section style="margin:18px 0 26px;padding:18px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;">
-    <h2 class="panel-heading">Sample library · 18 ready-to-audit tickets</h2>
-    <p style="font-size:13px;color:#64748B;margin:0 0 12px;">Select one or more samples, choose an AI provider, and run them through the same audit API as your real tickets.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-      <select id="sampleSelect" multiple size="6" aria-label="Select sample tickets" style="flex:1;min-width:280px;padding:8px;border:1px solid #CBD5E1;border-radius:8px;font:inherit;"></select>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="pill-btn" id="loadSelected" type="button">Load first selected into form</button>
-        <button class="run-btn" id="runBatch" type="button" style="width:auto;margin:0;">Run selected samples</button>
+  <section class="card runner-samples"><h2 class="panel-heading">Sample library · 18 ready-to-audit tickets</h2>
+    <p class="runner-intro">Select one or more samples, choose an AI provider, and run them through the same audit API as your real tickets.</p>
+    <div class="sample-controls"><select id="sampleSelect" class="sample-select" multiple size="6" aria-label="Select sample tickets"></select>
+      <div class="sample-actions"><button class="pill-btn" id="loadSelected" type="button">Load first selected into form</button>
+        <button class="run-btn batch-run" id="runBatch" type="button">Run selected samples</button>
       </div>
     </div>
-    <div id="batchStatus" role="status" style="margin-top:12px;color:#475569;font-size:13px;"></div>
-    <div id="batchResults" style="margin-top:8px;"></div>
+    <div id="batchStatus" class="batch-status" role="status"></div>
+    <div id="batchResults" class="batch-results"></div>
   </section>
 
   <div class="grid">
@@ -113,3 +111,4 @@
     </div>
 
   </div>
+</div>
