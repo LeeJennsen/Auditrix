@@ -1,55 +1,138 @@
 (function () {
+  'use strict';
+
   const main = document.getElementById('content-container');
   const pageInstance = main.dataset.pageInstance;
-  let currentRubrics = null;
+  const typeLabels = {
+    INC: 'Incidents',
+    SR: 'Service Requests',
+    CR: 'Change Requests',
+    PRB: 'Problem Records'
+  };
+  let rubrics = null;
+  let selectedType = 'INC';
+  let savedThreshold = 80;
 
-  function escapeHtml(value) {
-    return String(value == null ? '' : value)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  const slider = document.getElementById('thresholdSlider');
+  const output = document.getElementById('thresholdOutput');
+  const rule = document.getElementById('thresholdRule');
+  const saveStatus = document.getElementById('thresholdSaveStatus');
+  const saveButton = document.getElementById('saveThresholdBtn');
+
+  function isCurrentPage() {
+    return main.dataset.page === 'scoring-rubric' && main.dataset.pageInstance === pageInstance;
   }
 
-  const livePanel = document.createElement('section');
-  livePanel.style.cssText = 'background:#fff;border:1px solid #CBD5E1;border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:14px;';
-  livePanel.innerHTML = '<div><h2 style="margin:0;color:#1E293B;font-size:18px;">Live SOP Library Used by AI Audits</h2><p style="margin:5px 0 0;color:#64748B;font-size:13px;">The complete server-side clauses below are passed into the selected model for every ticket audit.</p></div><div id="liveRubrics" style="display:grid;gap:12px;"><div style="color:#64748B;">Loading current SOP text…</div></div><div id="rubricExportStatus" role="status" style="font-size:12px;color:#64748B;"></div>';
-  main.appendChild(livePanel);
+  function renderThreshold(value, saved) {
+    const threshold = Number(value);
+    output.value = threshold + '%';
+    output.textContent = threshold + '%';
+    slider.style.setProperty('--threshold-position', threshold + '%');
+    rule.innerHTML = '<strong>Scores below ' + threshold + '%</strong> need QC. Scores <strong>' + threshold + '% or higher</strong> are cleared.';
+    const unchanged = threshold === savedThreshold;
+    saveButton.disabled = saved || unchanged;
+    if (!saved) saveStatus.textContent = unchanged ? 'Matches the saved setting.' : 'Unsaved change.';
+  }
 
-  AuditAPI.getRubrics().then(function (rubrics) {
-    if (main.dataset.page !== 'scoring-rubric' || main.dataset.pageInstance !== pageInstance) return;
-    currentRubrics = rubrics;
-    document.getElementById('liveRubrics').innerHTML = Object.entries(rubrics).map(function (entry) {
-      return `<details style="border:1px solid #E2E8F0;border-radius:8px;padding:12px 14px;">
-        <summary style="cursor:pointer;font-weight:600;color:#1E293B;">${escapeHtml(entry[0])} SOP · ${entry[1].trim().split(/\r?\n/).filter(Boolean).length} clauses</summary>
-        <pre style="white-space:pre-wrap;line-height:1.65;font:13px/1.65 inherit;color:#334155;margin:12px 0 2px;">${escapeHtml(entry[1].trim())}</pre>
-      </details>`;
+  function renderRubric(type) {
+    if (!rubrics || !isCurrentPage()) return;
+    selectedType = type;
+    document.querySelectorAll('[data-rubric]').forEach(function (button) {
+      const selected = button.dataset.rubric === type;
+      button.classList.toggle('active', selected);
+      button.setAttribute('aria-selected', String(selected));
+      button.tabIndex = selected ? 0 : -1;
+    });
+
+    const rubric = rubrics[type];
+    if (!rubric) {
+      document.getElementById('rubricSummary').textContent = 'No audit SOP is configured for this record type.';
+      document.getElementById('rubricCriteria').replaceChildren();
+      document.getElementById('rubricClauseCount').textContent = 'No criteria';
+      return;
+    }
+
+    const criteria = rubric.criteria || [];
+    const escapeHtml = function (value) { return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); };
+    document.getElementById('rubricSummary').innerHTML = '<strong>' + escapeHtml(typeLabels[type]) + ' audit rubric ' + escapeHtml(rubric.version) + '</strong><span class="muted"> Pass earns full weight; partial earns half; fail earns zero. Explicitly not applicable criteria are excluded from the total. Results require resolution-note evidence.</span>';
+    document.getElementById('rubricCriteria').innerHTML = criteria.map(function (criterion) {
+      const conditional = criterion.conditional ? '<p class="muted">' + escapeHtml(criterion.conditional) + '</p>' : '';
+      return '<li><div class="rubric-criterion-text"><strong>' + escapeHtml(criterion.title) + '</strong><p class="muted">' + escapeHtml(criterion.guidance) + '</p>' + conditional + '</div><span class="rubric-weight">' + Number(criterion.weight) + '%</span></li>';
     }).join('');
-  }).catch(function (error) {
-    if (main.dataset.page !== 'scoring-rubric' || main.dataset.pageInstance !== pageInstance) return;
-    document.getElementById('liveRubrics').textContent = 'Could not load live SOPs: ' + error.message;
+    document.getElementById('rubricClauseCount').textContent = criteria.length + (criteria.length === 1 ? ' criterion' : ' criteria');
+  }
+
+  document.getElementById('rubricTabs').addEventListener('click', function (event) {
+    const button = event.target.closest('[data-rubric]');
+    if (button) renderRubric(button.dataset.rubric);
+  });
+  document.getElementById('rubricTabs').addEventListener('keydown', function (event) {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    const buttons = Array.from(this.querySelectorAll('[data-rubric]'));
+    let index = buttons.findIndex(function (button) { return button.dataset.rubric === selectedType; });
+    if (event.key === 'ArrowLeft') index = (index + buttons.length - 1) % buttons.length;
+    else if (event.key === 'ArrowRight') index = (index + 1) % buttons.length;
+    else if (event.key === 'Home') index = 0;
+    else index = buttons.length - 1;
+    event.preventDefault();
+    buttons[index].focus();
+    renderRubric(buttons[index].dataset.rubric);
+  });
+
+  slider.addEventListener('input', function () { renderThreshold(slider.value, false); });
+  saveButton.addEventListener('click', async function () {
+    saveButton.disabled = true;
+    saveStatus.textContent = 'Saving threshold…';
+    try {
+      const settings = await AuditAPI.updateSettings(Number(slider.value));
+      if (!isCurrentPage()) return;
+      savedThreshold = settings.compliance_threshold;
+      slider.value = String(savedThreshold);
+      renderThreshold(savedThreshold, true);
+      saveStatus.textContent = 'Saved. New audits now use this threshold.';
+    } catch (error) {
+      if (!isCurrentPage()) return;
+      saveButton.disabled = false;
+      saveStatus.textContent = 'Could not save: ' + error.message;
+    }
   });
 
   document.getElementById('exportRubricBtn').addEventListener('click', async function () {
-    const status = document.getElementById('rubricExportStatus');
     const button = this;
     button.disabled = true;
     try {
-      if (!currentRubrics) currentRubrics = await AuditAPI.getRubrics();
+      const data = await Promise.all([AuditAPI.getRubricCriteria(), AuditAPI.getSettings()]);
       const snapshot = {
         exported_at: new Date().toISOString(),
-        source: '/api/v1/rubrics',
-        rubrics: currentRubrics
+        rubrics: data[0],
+        compliance_threshold: data[1].compliance_threshold
       };
       const url = URL.createObjectURL(new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' }));
       const link = document.createElement('a');
       link.href = url;
-      link.download = `audit-rubrics-${new Date().toISOString().slice(0,10)}.json`;
+      link.download = 'audit-rubrics-' + new Date().toISOString().slice(0, 10) + '.json';
       link.click();
       URL.revokeObjectURL(url);
-      status.textContent = 'Downloaded a timestamped snapshot of the live server rubric.';
     } catch (error) {
-      status.textContent = 'Could not export rubric: ' + error.message;
+      saveStatus.textContent = 'Could not export configuration: ' + error.message;
     } finally {
       button.disabled = false;
     }
+  });
+
+  Promise.all([AuditAPI.getRubricCriteria(), AuditAPI.getSettings()]).then(function (results) {
+    if (!isCurrentPage()) return;
+    rubrics = results[0];
+    renderRubric(selectedType);
+    savedThreshold = results[1].compliance_threshold;
+    slider.value = String(savedThreshold);
+    renderThreshold(savedThreshold, true);
+    saveStatus.textContent = 'Saved setting loaded from the audit service.';
+  }).catch(function (error) {
+    if (!isCurrentPage()) return;
+    document.getElementById('rubricSummary').textContent = 'Could not load audit criteria: ' + error.message;
+    document.getElementById('rubricClauseCount').textContent = 'Unavailable';
+    rule.textContent = 'Could not load the saved threshold: ' + error.message;
+    saveStatus.textContent = 'Check the service connection and reload this page.';
   });
 })();

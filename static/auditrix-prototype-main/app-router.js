@@ -9,7 +9,7 @@
     'consistency-analytics': { file: 'consistency-analytics.html', title: 'Consistency Analytics', active: 'consistency-analytics', scripts: ['consistency-analytics.js'] },
     monitor: { file: 'monitor.html', title: 'Real-Time Monitor', active: 'real-time-monitor', scripts: ['monitor-page.js', 'monitor.js'] },
     history: { file: 'history.html', title: 'Audit History', active: 'audit-history', scripts: ['history.js'] },
-    'scoring-rubric': { file: 'scoring-rubric.html', title: 'Scoring Rubric', active: 'scoring-rubric', scripts: ['scoring-rubric-page.js', 'scoring-rubric.js'] },
+    'scoring-rubric': { file: 'scoring-rubric.html', title: 'Scoring Rubric', active: 'scoring-rubric', scripts: ['scoring-rubric.js'] },
     'legacy-operations': { file: 'legacy-operations.html', title: 'Legacy Process', active: '', scripts: [] },
     'audit-runner': { file: 'audit-runner.html', title: 'Run AI Audit', active: 'run-ai-audit', scripts: ['audit-runner.js'] }
   };

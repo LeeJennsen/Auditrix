@@ -138,6 +138,44 @@ button:disabled { cursor: not-allowed; opacity: .58; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 .view-stack { width:100%; min-width:0; display:flex; flex-direction:column; gap:24px; }
+.rubric-view { gap:20px; }
+.rubric-lede { margin:7px 0 0; }
+.rubric-section-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:18px; }
+.rubric-section-heading h2 { margin:0; font-size:17px; letter-spacing:-.01em; }
+.rubric-section-heading p { margin:5px 0 0; }
+.rubric-tabs { display:flex; gap:6px; overflow-x:auto; margin:0 -2px 18px; padding:0 2px 10px; border-bottom:1px solid var(--app-line); }
+.rubric-tabs .tab { flex:0 0 auto; }
+.rubric-panel { min-height:170px; }
+.rubric-criteria { display:grid; gap:10px; margin:16px 0 0; padding:0; list-style:none; counter-reset:rubric-clause; }
+.rubric-criteria li { display:flex; align-items:flex-start; gap:16px; padding:14px 16px; border:1px solid var(--app-line); border-radius:9px; background:#FBFCFE; counter-increment:rubric-clause; }
+.rubric-criteria li::before { content:counter(rubric-clause, decimal-leading-zero); color:var(--app-primary); font-size:11px; font-weight:700; padding-top:2px; }
+.rubric-criterion-text { flex:1; min-width:0; color:#334155; }
+.rubric-criterion-text p { margin:5px 0 0; font-size:12px; line-height:1.5; }
+.rubric-criterion-text strong { color:#1E293B; font-size:13px; }
+.rubric-weight { flex:0 0 auto; color:var(--app-muted); font-size:11px; white-space:nowrap; }
+.criterion-breakdown { display:grid; gap:8px; margin:18px 0; }
+.criterion-breakdown h3 { margin:0 0 2px; color:#334155; font-size:13px; }
+.criterion-result { padding:10px 12px; border:1px solid var(--app-line); border-radius:8px; background:#FBFCFE; }
+.criterion-result > div { display:flex; justify-content:space-between; gap:10px; align-items:center; }
+.criterion-result strong { color:#334155; font-size:12px; }
+.criterion-result p { margin:5px 0 0; color:var(--app-muted); font-size:11px; line-height:1.5; }
+.criterion-result-status { color:var(--app-muted); font-size:10px; font-weight:700; text-transform:capitalize; white-space:nowrap; }
+.criterion-result-status.pass { color:#1E7F4D; }
+.criterion-result-status.partial { color:#B45309; }
+.criterion-result-status.fail { color:#B4432F; }
+.threshold-card { display:grid; gap:16px; }
+.threshold-card .rubric-section-heading { align-items:center; margin:0; }
+.threshold-value { color:var(--app-primary); font-size:30px; font-weight:700; line-height:1; font-variant-numeric:tabular-nums; }
+.threshold-control { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:14px; color:var(--app-muted); font-size:12px; }
+.threshold-control input[type="range"] { width:100%; height:8px; margin:0; padding:0; appearance:none; border:0; border-radius:999px; background:linear-gradient(to right,var(--app-primary) 0,var(--app-primary) var(--threshold-position,90%),#E2E8F0 var(--threshold-position,90%),#E2E8F0 100%); cursor:pointer; }
+.threshold-control input[type="range"]::-webkit-slider-thumb { width:20px; height:20px; appearance:none; border:3px solid #fff; border-radius:50%; background:var(--app-primary); box-shadow:0 0 0 1px var(--app-primary),0 2px 5px #0f172a24; }
+.threshold-control input[type="range"]::-moz-range-thumb { width:14px; height:14px; border:3px solid #fff; border-radius:50%; background:var(--app-primary); box-shadow:0 0 0 1px var(--app-primary),0 2px 5px #0f172a24; }
+.threshold-preview { display:flex; align-items:flex-start; gap:10px; padding:13px 15px; border:1px solid #D7E6FC; border-radius:9px; background:#F3F8FF; color:#334155; }
+.threshold-marker { flex:0 0 8px; width:8px; height:8px; margin-top:6px; border-radius:50%; background:var(--app-primary); }
+.threshold-footer { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+.threshold-footer p { margin:0; font-size:12px; }
+.threshold-note { margin:0; color:var(--app-muted); font-size:12px; }
+@media (max-width:640px) { .rubric-section-heading { margin-bottom:12px; } .rubric-criteria li { gap:10px; padding:12px; } .rubric-weight { white-space:normal; text-align:right; } }
 
 /* Run AI Audit feature styles, shared by the app shell. */
 .audit-runner-view {

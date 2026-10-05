@@ -17,7 +17,7 @@
       return `<div style="display:grid;grid-template-columns:72px 1fr 34px;gap:10px;align-items:center;margin:8px 0;font-size:12px;"><span>${escapeHtml(bucket.range)}</span><div style="height:12px;background:#E2E8F0;border-radius:8px;overflow:hidden;"><div style="width:${width}%;height:100%;background:#2563EB;"></div></div><strong>${bucket.count}</strong></div>`;
     }).join('');
 
-    const types = ['INC','SR','CR'].map(function (type) {
+    const types = ['INC','SR','CR','PRB'].map(function (type) {
       const rows = tickets.filter(function (ticket) { return ticket.type === type; });
       const passed = rows.filter(function (ticket) { return !ticket.requires_human_qc; }).length;
       const avg = rows.length ? Math.round(rows.reduce(function (sum, t) { return sum + t.compliance_score; }, 0) / rows.length) : 0;

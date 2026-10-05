@@ -34,5 +34,18 @@
     getRubrics() {
       return request('/api/v1/rubrics');
     },
+    getRubricCriteria() {
+      return request('/api/v1/rubrics/criteria');
+    },
+    getSettings() {
+      return request('/api/v1/settings');
+    },
+    updateSettings(complianceThreshold) {
+      return request('/api/v1/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ compliance_threshold: complianceThreshold }),
+      });
+    },
   };
 })();

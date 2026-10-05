@@ -2,6 +2,8 @@
   let demoTimer = null;
   let refreshTimer = null;
   let demoBusy = false;
+  let lastSuccessfulRefresh = null;
+  let liveAuditCount = 0;
   const monitorInstance = document.getElementById('content-container').dataset.pageInstance;
   const isMonitorPage = () => {
     const content = document.getElementById('content-container');
@@ -28,13 +30,42 @@
       const tickets = await AuditAPI.listTickets();
       if (!isMonitorPage()) return;
       window.rawEvents = tickets.map(asEvent).sort((a, b) => b.timestamp - a.timestamp);
+      const auditCount = document.getElementById('monitorAuditCount');
+      const qcCount = document.getElementById('monitorQcCount');
+      if (auditCount) auditCount.textContent = tickets.length + (tickets.length === 1 ? ' audited record in feed' : ' audited records in feed');
+      if (qcCount) {
+        const pendingQc = tickets.filter(ticket => ticket.requires_human_qc).length;
+        qcCount.textContent = pendingQc + (pendingQc === 1 ? ' needs QC' : ' need QC');
+      }
       if (typeof window.render === 'function') window.render();
+      lastSuccessfulRefresh = Date.now();
+      liveAuditCount = tickets.length;
       const label = document.getElementById('statusLabel');
       if (label) label.textContent = `Live · ${tickets.length} audits · updated ${new Date().toLocaleTimeString()}`;
     } catch (error) {
       if (!isMonitorPage()) return;
       const label = document.getElementById('statusLabel');
       if (label) label.textContent = `Feed error: ${error.message}`;
+      lastSuccessfulRefresh = null;
+      const auditCount = document.getElementById('monitorAuditCount');
+      const qcCount = document.getElementById('monitorQcCount');
+      if (auditCount) auditCount.textContent = 'Audit count unavailable';
+      if (qcCount) qcCount.textContent = 'QC count unavailable';
+    }
+  }
+
+  function updateMonitorClock() {
+    if (!isMonitorPage()) return;
+    const now = new Date();
+    const clock = document.getElementById('monitorClock');
+    if (clock) {
+      clock.dateTime = now.toISOString();
+      clock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+    const label = document.getElementById('statusLabel');
+    if (label && window.live !== false && lastSuccessfulRefresh !== null) {
+      const age = Math.floor((Date.now() - lastSuccessfulRefresh) / 1000);
+      label.textContent = `Live · ${liveAuditCount} audits · refreshed ${age}s ago`;
     }
   }
 
@@ -80,4 +111,6 @@
 
   loadLiveEvents();
   refreshTimer = setInterval(loadLiveEvents, 4000);
+  updateMonitorClock();
+  setInterval(updateMonitorClock, 1000);
 })();

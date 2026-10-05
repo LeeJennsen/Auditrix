@@ -1,7 +1,7 @@
 # AI-Powered Audit Lifecycle Platform (POC)
 
 Automates Operations Governance ("CAFÉ") audits for closed ITSM tickets
-(INC / SR / CR): ingests a closed ticket, evaluates it against mock SOPs
+(INC / SR / CR / PRB): ingests a closed ticket, evaluates it against mock SOPs
 via an LLM, assigns a compliance score, and flags non-compliant tickets
 for human QC.
 
@@ -101,7 +101,7 @@ curl http://localhost:8000/health
   `gemini-3.8-flash`. Change `GEMINI_MODEL`, `GEMINI_FALLBACK_MODEL`, or
   `GEMINI_THINKING_LEVEL` in `.env` to tune this behavior.
 - **Sample tickets**: open the dashboard and choose **Run New Audit Batch**,
-  or open `/audit-runner.html`. The server provides 18 INC/SR/CR examples with
+  or open `/auditrix-prototype-main/#/audit-runner`. The server provides 18 INC/SR/CR examples with
   strong and weak closure notes. Select one or more, choose the provider, and
   run them through the normal audit engine. Successful audits appear in the
   ticket queue and history. `GET /api/v1/samples` lists examples and
@@ -129,8 +129,9 @@ curl http://localhost:8000/health
 - **Mock LLM mode**: select **Demo (no API)** in the audit runner to use the
   deterministic heuristic scorer (`_call_mock_llm`) for local workflow checks.
 - **Routing**: `determine_qc_routing()` implements the exception-based
-  logic — anything below `COMPLIANCE_THRESHOLD` (default 90, configurable
-  via env var) is flagged `requires_human_qc = True`.
+  logic — anything below `COMPLIANCE_THRESHOLD` (default 80) is flagged
+  `requires_human_qc = True`. The Scoring Rubric page can update this value;
+  the setting is stored in SQLite and applies to future audits.
 - **Validation**: malformed payloads are rejected automatically with
   `HTTP 422` by Pydantic before any business logic runs.
 

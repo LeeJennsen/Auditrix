@@ -85,6 +85,16 @@ const API_BASE = window.location.origin.startsWith('file')
     els.closing_agent.value = sample.closing_agent;
   }
 
+  function providerLabel(provider, model) {
+    return provider === 'mock' ? 'Offline demo rules (no AI model)' : `${provider}${model ? ` / ${model}` : ''}`;
+  }
+
+  function updateAuditButtonLabel() {
+    if (els.runBtn.disabled) return;
+    els.runBtn.textContent = els.llm_provider.value === 'mock' ? 'Run offline demo evaluation' : 'Run AI audit';
+  }
+  els.llm_provider.addEventListener('change', updateAuditButtonLabel);
+
   function loadRandomSample(samples){
     const sample = samples[Math.floor(Math.random() * samples.length)];
     fillForm(sample);
@@ -121,7 +131,7 @@ const API_BASE = window.location.origin.startsWith('file')
     const status = document.getElementById('batchStatus');
     const results = document.getElementById('batchResults');
     button.disabled = true;
-    status.textContent = `Running ${sample_ids.length} audit(s) with ${els.llm_provider.value}…`;
+    status.textContent = `Running ${sample_ids.length} audit(s) with ${providerLabel(els.llm_provider.value)}…`;
     results.textContent = '';
     try {
       const response = await fetch(`${API_BASE}/api/v1/audits/batch`, {
@@ -134,7 +144,7 @@ const API_BASE = window.location.origin.startsWith('file')
       results.innerHTML = data.results.map(item => {
         const audit = item.audit;
         const text = audit
-          ? `${audit.ticket_id}: score ${audit.compliance_score}, ${audit.requires_human_qc ? 'flagged for QC' : 'cleared'} · ${audit.llm_provider}/${audit.llm_model}`
+          ? `${audit.ticket_id}: score ${audit.compliance_score}, ${audit.requires_human_qc ? 'flagged for QC' : 'cleared'} · ${providerLabel(audit.llm_provider, audit.llm_model)}`
           : `${item.ticket_id}: ${item.error}`;
         const href = audit ? `/auditrix-prototype-main/ticket-detail.html?id=${encodeURIComponent(audit.audit_id)}` : '';
         return `<div style="padding:8px 0;border-top:1px solid #E2E8F0;font-size:12.5px;">${escapeHtml(text)} ${href ? `<a href="${href}">View</a>` : ''}</div>`;
@@ -162,8 +172,13 @@ const API_BASE = window.location.origin.startsWith('file')
 
     els.scoreNum.textContent = data.compliance_score;
     els.reasoningText.textContent = data.audit_reasoning;
+    const breakdown = document.getElementById('criterionBreakdown');
+    breakdown.innerHTML = '<h3>Weighted criteria</h3>' + (data.criterion_results || []).map(criterion => {
+      const status = criterion.status.replace('_', ' ');
+      return `<div class="criterion-result"><div><strong>${escapeHtml(criterion.title)}</strong><span class="criterion-result-status ${escapeHtml(criterion.status)}">${escapeHtml(status)} · ${Number(criterion.weight)}%</span></div><p>${criterion.evidence ? `Evidence: “${escapeHtml(criterion.evidence)}”` : 'No supporting resolution-note evidence.'}</p></div>`;
+    }).join('');
     els.metaTicketId.textContent = data.ticket_id;
-    els.metaProvider.textContent = data.llm_model || data.llm_provider;
+    els.metaProvider.textContent = providerLabel(data.llm_provider, data.llm_model);
     els.metaLatency.textContent = data.processing_time_ms + ' ms';
 
     els.statusPill.classList.remove('ok', 'warn');
@@ -214,7 +229,7 @@ const API_BASE = window.location.origin.startsWith('file')
       );
     } finally {
       els.runBtn.disabled = false;
-      els.runBtn.textContent = 'Run AI audit';
+      updateAuditButtonLabel();
     }
   });
 
@@ -239,6 +254,7 @@ const API_BASE = window.location.origin.startsWith('file')
         const firstAvailable = Object.keys(available).find((provider) => available[provider]);
         els.llm_provider.value = firstAvailable || 'mock';
       }
+      updateAuditButtonLabel();
       els.connStatus.className = 'conn live';
       await loadSamples();
       els.connLabel.textContent = `Backend live · ${data.llm_provider}`;

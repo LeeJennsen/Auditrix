@@ -1,15 +1,4 @@
-var rawEvents = [
-    { time: '09:41', ticket: 'CR-0359', text: 'opened, monitoring started', kind: 'info' },
-    { time: '09:38', ticket: 'SR-1201', text: 'flagged: missing approver hierarchy check', kind: 'warn' },
-    { time: '09:35', ticket: 'INC-2061', text: 'closure notes matched SLA, cleared', kind: 'clear' },
-    { time: '09:30', ticket: 'CR-0345', text: 'rollback plan field still empty (2nd reminder)', kind: 'crit' },
-    { time: '09:22', ticket: 'INC-2059', text: 'auto-cleared, AI score 97/100', kind: 'clear' },
-    { time: '09:15', ticket: 'SR-1198', text: 'requester response overdue by 4h', kind: 'warn' },
-    { time: '09:07', ticket: 'CR-0351', text: 'post-implementation review attached, score recalculated to 88', kind: 'clear' },
-    { time: '08:58', ticket: 'INC-2057', text: 'duplicate incident detected, linking to INC-2049', kind: 'warn' },
-    { time: '08:44', ticket: 'CR-0348', text: 'change window closed with no rollback test logged', kind: 'crit' },
-    { time: '08:31', ticket: 'SR-1193', text: 'auto-cleared, AI score 94/100', kind: 'clear' }
-  ];
+var rawEvents = [];
 
   var live = true;
   var filter = 'all';
@@ -47,12 +36,11 @@ var rawEvents = [
       toggleBtn.textContent = 'Pause Live Feed';
       toggleBtn.setAttribute('style', 'padding: 10px 16px; border-radius: 8px; border: 1px solid #CBD5E1; background: #FFFFFF; color: #334155; font-size: 13px; font-weight: 500; cursor: pointer;');
       document.getElementById('liveDot').setAttribute('style', 'width: 9px; height: 9px; border-radius: 999px; background: #4FA187; animation: pulse 1.4s infinite;');
-      document.getElementById('statusLabel').textContent = 'Live (streaming)';
     } else {
       toggleBtn.textContent = 'Resume Live Feed';
       toggleBtn.setAttribute('style', 'padding: 10px 16px; border-radius: 8px; border: none; background: #1E7F4D; color: #FFFFFF; font-size: 13px; font-weight: 500; cursor: pointer;');
       document.getElementById('liveDot').setAttribute('style', 'width: 9px; height: 9px; border-radius: 999px; background: #94A3B8;');
-      document.getElementById('statusLabel').textContent = 'Paused';
+      document.getElementById('statusLabel').textContent = 'Feed updates paused';
     }
 
     document.getElementById('chip-all').setAttribute('style', filter === 'all' ? chipActive : chipBase);

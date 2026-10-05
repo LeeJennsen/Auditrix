@@ -1,322 +1,53 @@
-<!-- HEADER -->
+<div class="view-stack rubric-view">
+  <header class="topbar">
     <div>
-      <a href="index.html" style="font-size: 12.5px; color: #2563EB; text-decoration: none;">&larr; Back to Dashboard</a>
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px;">
-        <div>
-          <h1 style="font-size: 22px; color: #1E293B;">Scoring Rubric</h1>
-          <div style="font-size: 13.5px; color: #64748B; margin-top: 4px;">The standardized weighting every ticket is scored against, before a human ever opens it</div>
-        </div>
-        <button id="exportRubricBtn" type="button" style="padding: 10px 16px; border-radius: 8px; border: none; background: #2563EB; color: #FFFFFF; font-size: 13px; font-weight: 500; cursor: pointer;">Export Rubric Version</button>
-      </div>
+      <h1>Scoring Rubric</h1>
+      <p class="muted rubric-lede">Review the live audit criteria and choose the score required for automatic clearance.</p>
     </div>
+    <button id="exportRubricBtn" class="button secondary" type="button">Export configuration</button>
+  </header>
 
-    <!-- TICKET TYPE TABS -->
-    <div style="display: flex; gap: 8px;">
-      <button id="tab-CR" onclick="showRubric('CR')">Change Requests (CR)</button>
-      <button id="tab-INC" onclick="showRubric('INC')">Incidents (INC)</button>
-      <button id="tab-SR" onclick="showRubric('SR')">Service Requests (SR)</button>
-      <button id="tab-PRB" onclick="showRubric('PRB')">Problem Records (PRB)</button>
+  <section class="card rubric-library" aria-labelledby="rubricLibraryTitle">
+    <div class="rubric-section-heading">
+      <div>
+        <h2 id="rubricLibraryTitle">Audit criteria by record type</h2>
+        <p class="muted">These server-managed SOPs are supplied to the AI evaluator for the matching ticket type.</p>
+      </div>
+      <span id="rubricClauseCount" class="status clear">Loading criteria</span>
     </div>
-
-    <!-- CRITERIA TABLE: CR -->
-    <div id="rubric-CR" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 14px 22px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #64748B; font-weight: 600; border-bottom: 1px solid #E2E8F0; background: #F1F5F9;">
-        <div>Criterion</div>
-        <div>Weight</div>
-        <div>What it checks</div>
-        <div>Type</div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Documentation Completeness</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 30%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">30%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">Requester, description, business justification all present</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Approval Trail</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 25%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">25%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">Correct approver hierarchy signed off before the change window<br><span style="font-size: 11px; color: #64748B; font-style: italic;">System blocks the same login ID from acting as both Requester and Approver on one ticket</span></div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Rollback Plan Present</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 25%; height: 100%; background: #C25A44;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">25%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">A tested rollback procedure is attached to the ticket</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #FBEAE6; color: #B4432F;">Critical</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Post-Implementation Review</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 20%; height: 100%; background: #C25A44;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">20%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">Outcome of the change confirmed and logged after closure</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #FBEAE6; color: #B4432F;">Critical</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Cost Impact Reviewed</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 10%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">10%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">Required if change touches cloud infrastructure</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
+    <div id="rubricTabs" class="rubric-tabs" role="tablist" aria-label="Record type rubrics">
+      <button class="tab active" type="button" role="tab" aria-selected="true" data-rubric="INC">Incidents</button>
+      <button class="tab" type="button" role="tab" aria-selected="false" data-rubric="SR">Service Requests</button>
+      <button class="tab" type="button" role="tab" aria-selected="false" data-rubric="CR">Change Requests</button>
+      <button class="tab" type="button" role="tab" aria-selected="false" data-rubric="PRB">Problem Records</button>
     </div>
-
-    <!-- INTERACTIVE WHAT-IF SIMULATOR (CR only) -->
-    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 22px 24px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 4px;">
-        <div>
-          <div style="font-size: 14px; font-weight: 600; color: #1E293B;">Interactive What-If: Sample CR Ticket</div>
-          <div style="font-size: 12px; color: #64748B; margin-top: 2px;">Toggle a criterion to Fail and watch the score and overall verdict update instantly</div>
-        </div>
-        <div style="display: flex; align-items: center; gap: 16px;">
-          <div style="text-align: right;">
-            <div style="font-size: 11px; color: #64748B; text-transform: uppercase; letter-spacing: 0.03em;">Score</div>
-            <div id="whatIfScore" class="mono" style="font-size: 26px; font-weight: 700; color: #1E7F4D;">100</div>
-          </div>
-          <div id="whatIfBadge" style="display: inline-block; padding: 6px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 700; background: #E8F5EE; color: #1E7F4D;">Overall: PASS</div>
-        </div>
-      </div>
-
-      <div style="margin-top: 16px; padding: 14px 16px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px;">
-        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-          <span style="font-size: 12.5px; font-weight: 600; color: #1E293B;">Change Type</span>
-          <div style="display: flex; gap: 8px;">
-            <button id="changeType-normal" onclick="setChangeType('normal')">Normal Change</button>
-            <button id="changeType-emergency" onclick="setChangeType('emergency')">Emergency Change</button>
-          </div>
-        </div>
-        <div style="font-size: 11.5px; color: #64748B; margin-top: 8px; line-height: 1.5;">Emergency changes skip pre-approval by design (ITIL-recognized exception) but require retrospective sign-off, so the AI checks for that instead of flagging a false violation.</div>
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 16px;">
-
-        <div style="display: grid; grid-template-columns: 1.6fr 130px 1fr; padding: 14px 16px; align-items: center; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Rollback Plan Present</span>
-            <span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 600; background: #FBEAE6; color: #B4432F;">Critical</span>
-          </div>
-          <div><button id="wi-rollback-toggle" onclick="whatIfToggle('rollback')">Pass</button></div>
-          <div style="font-size: 12px; color: #64748B;">Toggling to Fail simulates a missing rollback procedure</div>
-        </div>
-
-        <div id="wi-approver-row" style="display: grid; grid-template-columns: 1.6fr 130px 1fr; padding: 14px 16px; align-items: center; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Approver &ne; Requester</span>
-            <span id="wi-approver-badge" style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 600; background: #FBEAE6; color: #B4432F;">Critical</span>
-          </div>
-          <div><button id="wi-approver-toggle" onclick="whatIfToggle('approver')">Pass</button></div>
-          <div id="wi-approver-desc" style="font-size: 12px; color: #64748B;">Toggling to Fail simulates a segregation-of-duties violation</div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1.6fr 130px 1fr; padding: 14px 16px; align-items: center; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Post-Implementation Review</span>
-            <span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 600; background: #FBEAE6; color: #B4432F;">Critical</span>
-          </div>
-          <div><button id="wi-pir-toggle" onclick="whatIfToggle('pir')">Pass</button></div>
-          <div style="font-size: 12px; color: #64748B;">Toggling to Fail simulates no outcome logged after closure</div>
-        </div>
-
-      </div>
-
-      <div style="font-size: 11.5px; color: #94A3B8; margin-top: 14px;">Each critical criterion toggled to Fail subtracts 30 points from a 100-point baseline; any critical failure flips the overall verdict to FLAGGED regardless of the numeric score.</div>
+    <div id="rubricPanel" class="rubric-panel" role="tabpanel" aria-live="polite">
+      <div id="rubricSummary" class="muted">Loading the current server rubric…</div>
+      <ol id="rubricCriteria" class="rubric-criteria"></ol>
     </div>
+  </section>
 
-    <!-- CRITERIA TABLE: INC -->
-    <div id="rubric-INC" style="display: none; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 14px 22px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #64748B; font-weight: 600; border-bottom: 1px solid #E2E8F0; background: #F1F5F9;">
-        <div>Criterion</div>
-        <div>Weight</div>
-        <div>What it checks</div>
-        <div>Type</div>
+  <section class="card threshold-card" aria-labelledby="thresholdTitle">
+    <div class="rubric-section-heading">
+      <div>
+        <h2 id="thresholdTitle">Automatic clearance threshold</h2>
+        <p class="muted">Set the minimum AI score that can be cleared without human QC.</p>
       </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Time to Acknowledge</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 15%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">15%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">Incident was acknowledged within the SLA window for its priority level</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Root Cause Documented</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 30%; height: 100%; background: #C25A44;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">30%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">A specific root cause is recorded, not just "resolved," so repeat incidents can be traced</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #FBEAE6; color: #B4432F;">Critical</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Resolution Confirmed with Requester</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 30%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">30%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">The person who raised the incident confirmed the fix worked, not just the resolver</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Category &amp; Priority Correctly Tagged</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 25%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">25%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">Incident is tagged with the right system and severity, so trend reports stay accurate</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
+      <output id="thresholdOutput" class="threshold-value" for="thresholdSlider">—%</output>
     </div>
-
-    <!-- CRITERIA TABLE: SR -->
-    <div id="rubric-SR" style="display: none; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 14px 22px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #64748B; font-weight: 600; border-bottom: 1px solid #E2E8F0; background: #F1F5F9;">
-        <div>Criterion</div>
-        <div>Weight</div>
-        <div>What it checks</div>
-        <div>Type</div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Request Approved Before Fulfillment</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 30%; height: 100%; background: #C25A44;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">30%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">Sign-off exists before the request was fulfilled, not backfilled afterward</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #FBEAE6; color: #B4432F;">Critical</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Fulfillment Matches Request Scope</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 30%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">30%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">What was granted or delivered matches exactly what was asked for, no scope creep</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Requester Confirmation of Completion</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 25%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">25%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">The requester acknowledged receiving what they asked for</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">SLA Adherence</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 15%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">15%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">Request was fulfilled within the agreed turnaround time for its category</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
+    <div class="threshold-control">
+      <span>0%</span>
+      <input id="thresholdSlider" type="range" min="0" max="100" step="1" value="80" aria-label="Minimum score required for automatic clearance">
+      <span>100%</span>
     </div>
-
-    <!-- CRITERIA TABLE: PRB -->
-    <div id="rubric-PRB" style="display: none; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 14px 22px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #64748B; font-weight: 600; border-bottom: 1px solid #E2E8F0; background: #F1F5F9;">
-        <div>Criterion</div>
-        <div>Weight</div>
-        <div>What it checks</div>
-        <div>Type</div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Linked Incident Count</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 20%; height: 100%; background: #C25A44;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">20%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">3+ linked incidents required to justify opening a Problem record</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #FBEAE6; color: #B4432F;">Critical</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Root Cause Analysis Documented</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 30%; height: 100%; background: #C25A44;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">30%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">A specific root cause is recorded and traceable back to the linked incidents</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #FBEAE6; color: #B4432F;">Critical</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Permanent Fix vs. Workaround Distinguished</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 20%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">20%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">The record states plainly whether the fix applied is permanent or a temporary workaround</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center; border-bottom: 1px solid #E2E8F0;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Known Error Record Created</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 15%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">15%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">Required if root cause is known but a fix is still pending</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1.4fr 90px 2fr 110px; padding: 16px 22px; align-items: center;">
-        <div style="font-size: 13.5px; font-weight: 600; color: #1E293B;">Preventive Action Owner &amp; Target Date</div>
-        <div>
-          <div style="height: 8px; width: 100%; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-bottom: 4px;"><div style="width: 15%; height: 100%; background: #4FA187;"></div></div>
-          <div class="mono" style="font-size: 11.5px; color: #64748B;">15%</div>
-        </div>
-        <div style="font-size: 12.5px; color: #64748B;">The preventive action has a named owner and a target date, not left open-ended</div>
-        <div><span style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #E2E8F0; color: #64748B;">Standard</span></div>
-      </div>
+    <div class="threshold-preview" aria-live="polite">
+      <span class="threshold-marker" aria-hidden="true"></span>
+      <span id="thresholdRule">Loading the current routing rule…</span>
     </div>
-
-    <!-- THRESHOLD -->
-    <div style="display: flex; gap: 16px;">
-      <div style="flex: 2; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 20px 22px;">
-        <div style="font-size: 13px; font-weight: 600; color: #1E293B; margin-bottom: 10px;">Auto-flag threshold</div>
-        <div style="display: flex; align-items: center; gap: 14px;">
-          <div style="flex-grow: 1; height: 10px; background: linear-gradient(to right, #FBEAE6 0%, #FBEAE6 80%, #E8F5EE 80%, #E8F5EE 100%); border-radius: 999px; position: relative;">
-            <div style="position: absolute; left: 80%; top: -4px; width: 18px; height: 18px; border-radius: 999px; background: #2563EB; transform: translateX(-50%);"></div>
-          </div>
-          <div class="mono" style="font-size: 15px; font-weight: 700; color: #1E293B;">80</div>
-        </div>
-        <div style="font-size: 12px; color: #64748B; margin-top: 10px;">Any ticket scoring below 80, or failing a critical criterion outright, routes to human review instead of auto-clearing.</div>
-      </div>
-      <div style="flex: 1; background: #FDF3E6; border-radius: 12px; padding: 20px 22px;">
-        <div style="font-size: 11px; color: #8A6A3D; text-transform: uppercase; letter-spacing: 0.03em;">Critical override</div>
-        <div style="font-size: 13px; color: #7A5A2D; margin-top: 6px; line-height: 1.5;">A 0% on Rollback Plan or PIR flags the ticket regardless of overall score; a high combined score can't mask a missing critical control.</div>
-      </div>
+    <div class="threshold-footer">
+      <p id="thresholdSaveStatus" class="muted" role="status">Loading saved setting…</p>
+      <button id="saveThresholdBtn" class="button" type="button" disabled>Save threshold</button>
     </div>
-
-    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 16px 20px; font-size: 13px; color: #334155; line-height: 1.5;">
-      This rubric is what makes scoring repeatable across auditors: the weights and threshold are versioned and applied identically to every ticket of that type, so a change here updates how <em>every future ticket of that type</em> is scored, not just how one auditor happens to judge one ticket.
-    </div>
+    <p class="threshold-note">The saved setting is applied to every new AI audit and persists after the service restarts. Existing audit records keep the threshold used when they were created.</p>
+  </section>
+</div>

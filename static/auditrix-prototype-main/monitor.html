@@ -4,7 +4,7 @@
       <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px;">
         <div>
           <h1 style="font-size: 22px; color: #1E293B;">Real-Time Monitoring</h1>
-          <div style="font-size: 13.5px; color: #64748B; margin-top: 4px;">Live event stream across every open CAF&Eacute; / INC / SR / CR ticket</div>
+          <div style="font-size: 13.5px; color: #64748B; margin-top: 4px;">Live audit feed across saved INC / SR / CR / PRB records</div>
         </div>
         <button id="toggleBtn" onclick="toggleLive()">Pause Live Feed</button>
         <select id="demoIntervalSelect" aria-label="Sample stream interval" style="padding:9px 10px;border:1px solid #CBD5E1;border-radius:8px;color:#334155;">
@@ -20,11 +20,12 @@
     <!-- LIVE STATUS STRIP -->
     <div style="display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px 16px;">
       <div id="liveDot" style="width: 9px; height: 9px; border-radius: 999px; background: #4FA187; animation: pulse 1.4s infinite;"></div>
-      <div id="statusLabel" style="font-size: 13px; font-weight: 600; color: #1E293B;">Live (streaming)</div>
+      <div id="statusLabel" style="font-size: 13px; font-weight: 600; color: #1E293B;">Connecting to audit service…</div>
+      <time id="monitorClock" class="mono" aria-label="Current local time" style="margin-left:auto;font-size:13px;font-weight:600;color:#334155;">--:--:--</time>
       <div style="width: 1px; height: 16px; background: #E2E8F0;"></div>
-      <div style="font-size: 12.5px; color: #64748B;">37 tickets under active monitoring</div>
+      <div id="monitorAuditCount" style="font-size: 12.5px; color: #64748B;">Loading audited records…</div>
       <div style="width: 1px; height: 16px; background: #E2E8F0;"></div>
-      <div style="font-size: 12.5px; color: #64748B;">3 open flags</div>
+      <div id="monitorQcCount" style="font-size: 12.5px; color: #64748B;">Loading QC count…</div>
     </div>
 
     <!-- WORKFLOW STRIP -->
@@ -37,7 +38,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E7F4D" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M9 9h6v6H9z"/></svg>
           </div>
           <div style="font-size: 12.5px; font-weight: 600; color: #1E293B;">1. Auto-Extract</div>
-          <div style="font-size: 11px; color: #64748B; max-width: 150px;">INC/SR/CR pulled from ticketing system in real time</div>
+          <div style="font-size: 11px; color: #64748B; max-width: 150px;">INC/SR/CR/PRB records received from the audit service</div>
         </div>
 
         <div style="width: 40px; height: 2px; background: #CBD5E1;"></div>
