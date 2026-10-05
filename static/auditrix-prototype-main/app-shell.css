@@ -69,6 +69,9 @@ button:disabled { cursor: not-allowed; opacity: .58; }
   to { opacity: 1; transform: translateY(0); }
 }
 .app-content[aria-busy="true"] { cursor: progress; pointer-events: none; }
+.app-loading { display:flex; align-items:center; gap:11px; min-height:90px; padding:20px; color:var(--app-muted); }
+.app-loading-spinner { width:18px; height:18px; border:2px solid #DBEAFE; border-top-color:var(--app-primary); border-radius:50%; animation:app-loading-spin .7s linear infinite; }
+@keyframes app-loading-spin { to { transform:rotate(360deg); } }
 .app-content[data-page="audit-runner"] { gap: 0; }
 .app-content > * { max-width: 100%; }
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important; }

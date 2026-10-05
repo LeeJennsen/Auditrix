@@ -95,10 +95,24 @@
 
     content.classList.add('is-loading');
     content.setAttribute('aria-busy', 'true');
+    if (!content.firstElementChild) {
+      content.innerHTML = '<section class="app-loading" role="status"><span class="app-loading-spinner" aria-hidden="true"></span><span>Loading your workspace…</span></section>';
+    }
     try {
-      const response = await fetch(new URL(page.file, appRoot), { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-      if (!response.ok) throw new Error('The requested page could not be loaded (' + response.status + ').');
-      const markup = await response.text();
+      const controller = new AbortController();
+      const timeoutId = nativeSetTimeout(function () { controller.abort(); }, 15000);
+      let response;
+      let markup;
+      try {
+        response = await fetch(new URL(page.file, appRoot), {
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          signal: controller.signal
+        });
+        if (!response.ok) throw new Error('The requested page could not be loaded (' + response.status + ').');
+        markup = await response.text();
+      } finally {
+        nativeClearTimeout(timeoutId);
+      }
       if (version !== navigationVersion) return;
 
       clearPageResources();
@@ -134,7 +148,10 @@
       content.dataset.pageInstance = String(version);
       content.classList.remove('is-loading', 'is-entering');
       content.setAttribute('aria-busy', 'false');
-      content.innerHTML = '<section class="app-error" role="alert"><h1>Page unavailable</h1><p>' + error.message.replace(/[&<>"']/g, function (char) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]; }) + '</p><button type="button" data-retry>Try again</button></section>';
+      const message = error.name === 'AbortError'
+        ? 'Loading took too long. Check that the app server is running, then try again.'
+        : error.message;
+      content.innerHTML = '<section class="app-error" role="alert"><h1>Page unavailable</h1><p>' + message.replace(/[&<>"']/g, function (char) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]; }) + '</p><button type="button" data-retry>Try again</button></section>';
     }
   }
 

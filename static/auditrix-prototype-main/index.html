@@ -17,7 +17,9 @@
 <body>
   <div class="app-shell">
     <audit-sidebar active="dashboard"></audit-sidebar>
-    <main id="content-container" class="app-content" tabindex="-1" aria-live="polite" aria-busy="true"></main>
+    <main id="content-container" class="app-content" tabindex="-1" aria-live="polite" aria-busy="true">
+      <section class="app-loading" role="status"><span class="app-loading-spinner" aria-hidden="true"></span><span>Loading your workspace…</span></section>
+    </main>
   </div>
 </body>
 </html>

@@ -14,7 +14,7 @@ pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
 
-Frontend: http://localhost:8000/ (browser dashboard)
+Frontend: http://localhost:8000/ (redirects to the browser dashboard)
 Docs UI: http://localhost:8000/docs
 
 ## 2. Run with Docker
@@ -27,7 +27,7 @@ docker compose up --build -d
 docker compose logs -f
 ```
 
-Audit runner with provider selection, sample tickets, and batch audit: http://localhost:8000/audit-runner.html
+Audit runner with provider selection, sample tickets, and batch audit: http://localhost:8000/auditrix-prototype-main/#/audit-runner
 Real-Time Monitor includes a controllable randomized sample stream, generated records use the local mock evaluator.
 
 ### Persistent audit history

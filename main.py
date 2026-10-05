@@ -45,7 +45,7 @@ from threading import Lock
 from typing import Literal, Optional
 
 from fastapi import FastAPI, HTTPException, Query, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -1328,6 +1328,12 @@ async def unhandled_exception_handler(request, exc: Exception):
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={"detail": "An unexpected error occurred while processing the request."},
     )
+
+
+@app.get("/", include_in_schema=False)
+async def frontend_entrypoint():
+    """Send the service root to the SPA shell mounted under static/."""
+    return RedirectResponse(url="/auditrix-prototype-main/", status_code=307)
 
 
 app.mount(
