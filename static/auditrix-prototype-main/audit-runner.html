@@ -4,7 +4,7 @@
   <header class="top">
     <div class="wordmark">
       <h1>Run AI Audit</h1>
-      <p>Audit a ticket or a selected sample batch. Choose the configured provider and review each saved result in the live queue.</p>
+      <p>Submit a closed ticket for audit. Results are saved to the database and pushed to connected clients.</p>
     </div>
     <div class="conn" id="connStatus">
       <span class="dot"></span>
@@ -12,27 +12,20 @@
     </div>
   </header>
 
-  <div class="demo-row">
-    <button class="pill-btn" id="loadCompliant" type="button">Load random compliant ticket</button>
-    <button class="pill-btn" id="loadNonCompliant" type="button">Load random non-compliant ticket</button>
-  </div>
-
-  <section class="card runner-samples"><h2 class="panel-heading">Sample library · 18 ready-to-audit tickets</h2>
-    <p class="runner-intro">Select one or more samples, choose an AI provider, and run them through the same audit API as your real tickets.</p>
-    <div class="sample-controls"><select id="sampleSelect" class="sample-select" multiple size="6" aria-label="Select sample tickets"></select>
-      <div class="sample-actions"><button class="pill-btn" id="loadSelected" type="button">Load first selected into form</button>
-        <button class="run-btn batch-run" id="runBatch" type="button">Run selected samples</button>
-      </div>
-    </div>
-    <div id="batchStatus" class="batch-status" role="status"></div>
-    <div id="batchResults" class="batch-results"></div>
-  </section>
-
   <div class="grid">
 
     <!-- Form -->
     <div>
       <h2 class="panel-heading">Ticket details</h2>
+      <section class="card" style="margin:0 0 18px;padding:16px;">
+        <h3 style="margin:0 0 6px;font-size:14px;color:#1E293B;">Generate a random sample ticket</h3>
+        <p class="muted" style="margin:0 0 12px;font-size:12px;">Creates fresh ticket details from the backend and fills the audit form. The ticket is saved when you run the audit.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="run-btn" id="loadSampleBtn" type="button" style="flex:1;min-width:160px;background:#475569;">Generate random sample</button>
+          <button class="run-btn" id="runSampleBtn" type="button" style="flex:1;min-width:190px;background:#0F766E;">Generate &amp; run audit</button>
+        </div>
+        <div id="sampleStatus" role="status" class="muted" style="margin-top:8px;"></div>
+      </section>
       <form id="ticketForm">
         <div class="two-col">
           <div class="field">
@@ -66,18 +59,32 @@
         </div>
 
         <div class="field">
+          <label for="created_at">Ticket created at <span class="muted">(optional)</span></label>
+          <input type="datetime-local" id="created_at" />
+        </div>
+
+        <div class="field">
           <label for="llm_provider">AI model</label>
           <select id="llm_provider" required>
             <option value="gemini">Gemini</option>
             <option value="anthropic">Claude</option>
             <option value="openai">ChatGPT</option>
-            <option value="mock">Demo (no API)</option>
+            <option value="mock">Rule evaluator (no API)</option>
           </select>
         </div>
 
-        <button class="run-btn" id="runBtn" type="submit">Run AI audit</button>
+        <button class="run-btn" id="runBtn" type="submit" style="margin-top:10px;">Run AI audit</button>
         <div class="error-msg" id="errorMsg"></div>
       </form>
+
+      <section class="card" style="margin-top:18px;padding:16px;">
+        <h2 class="panel-heading" style="margin-top:0;">Generate 10 database tickets</h2>
+        <p class="muted">Generate procedural tickets, score them with a configured AI provider when available, and publish them to the live queue.</p>
+        <button class="run-btn" id="generateTicketsBtn" type="button">Generate 10 tickets</button>
+        <div id="generatorStatus" role="status" class="muted" style="margin-top:9px;"></div>
+        <div id="generatorLiveState" role="status" class="muted" style="margin-top:6px;"></div>
+        <div id="generatedTicketList" style="display:grid;gap:6px;margin-top:10px;"></div>
+      </section>
     </div>
 
     <!-- Result -->
@@ -101,6 +108,8 @@
 
           <p class="reasoning-heading">Why</p>
           <p class="reasoning-text" id="reasoningText">—</p>
+          <div id="auditFlagsResult"></div>
+          <div id="scoreSpreadResult" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0;" aria-label="Score spread metrics"></div>
           <div id="criterionBreakdown" class="criterion-breakdown" aria-label="Weighted criterion results"></div>
 
           <div class="meta-row">

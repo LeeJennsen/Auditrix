@@ -1,8 +1,14 @@
 services:
   audit-platform:
     build: .
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
     ports:
       - "8000:8000"
+    volumes:
+      - audit_data:/legacy-data:ro
     environment:
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
@@ -14,9 +20,26 @@ services:
       - OPENAI_MODEL=${OPENAI_MODEL:-}
       - GEMINI_FALLBACK_MODEL=${GEMINI_FALLBACK_MODEL:-}
       - GEMINI_THINKING_LEVEL=${GEMINI_THINKING_LEVEL:-low}
-      - AUDIT_DB_PATH=/data/audit.sqlite3
+      - DATABASE_URL=postgresql+psycopg://auditrix:${POSTGRES_PASSWORD:-auditrix_demo_password}@database:5432/auditrix
+      - LEGACY_SQLITE_PATH=/legacy-data/audit.sqlite3
+
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: auditrix
+      POSTGRES_USER: auditrix
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-auditrix_demo_password}
+    expose:
+      - "5432"
     volumes:
-      - audit_data:/data
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auditrix -d auditrix"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 volumes:
   audit_data:
+  postgres_data:

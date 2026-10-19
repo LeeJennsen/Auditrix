@@ -2,10 +2,11 @@
   'use strict';
 
   const appRoot = new URL('.', document.currentScript.src);
+  const ASSET_VERSION = '20261019-human-review-2';
   const pages = {
     dashboard: { file: 'dashboard.html', title: 'Dashboard', active: 'dashboard', scripts: ['dashboard.js'] },
     queue: { file: 'queue.html', title: 'Audit Queue', active: 'audit-queue', scripts: ['queue.js'] },
-    'ticket-detail': { file: 'ticket-detail.html', title: 'Ticket Details', active: 'ticket-details', scripts: ['ticket-detail-page.js', 'ticket-detail.js'] },
+    'ticket-detail': { file: 'ticket-detail.html', title: 'Ticket Details', active: 'ticket-details', scripts: ['ticket-detail.js'] },
     'consistency-analytics': { file: 'consistency-analytics.html', title: 'Consistency Analytics', active: 'consistency-analytics', scripts: ['consistency-analytics.js'] },
     monitor: { file: 'monitor.html', title: 'Real-Time Monitor', active: 'real-time-monitor', scripts: ['monitor-page.js', 'monitor.js'] },
     history: { file: 'history.html', title: 'Audit History', active: 'audit-history', scripts: ['history.js'] },
@@ -35,6 +36,9 @@
   };
 
   function clearPageResources() {
+    if (window.AuditAPI && typeof window.AuditAPI.clearPageListeners === 'function') {
+      window.AuditAPI.clearPageListeners();
+    }
     pageTimers.forEach(function (timer) {
       nativeClearInterval(timer);
       nativeClearTimeout(timer);
@@ -76,7 +80,9 @@
   function loadScript(source) {
     return new Promise(function (resolve, reject) {
       const script = document.createElement('script');
-      script.src = new URL(source, appRoot).href;
+      const scriptUrl = new URL(source, appRoot);
+      scriptUrl.searchParams.set('v', ASSET_VERSION);
+      script.src = scriptUrl.href;
       script.dataset.pageScript = 'true';
       script.onload = resolve;
       script.onerror = function () { reject(new Error('Could not load ' + source)); };
@@ -106,6 +112,7 @@
       try {
         response = await fetch(new URL(page.file, appRoot), {
           headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          cache: 'no-store',
           signal: controller.signal
         });
         if (!response.ok) throw new Error('The requested page could not be loaded (' + response.status + ').');

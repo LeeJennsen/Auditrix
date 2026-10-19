@@ -27,6 +27,13 @@
     </div>
   </section>
 
+  <section class="card rubric-library" aria-label="Score spread metrics from saved tickets">
+    <div class="rubric-section-heading">
+      <div><h2>Live score spread</h2><p class="muted">Average values from the score spread columns on saved database tickets.</p></div>
+    </div>
+    <div id="rubricScoreSpread" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;"></div>
+  </section>
+
   <section class="card threshold-card" aria-labelledby="thresholdTitle">
     <div class="rubric-section-heading">
       <div>
@@ -37,7 +44,7 @@
     </div>
     <div class="threshold-control">
       <span>0%</span>
-      <input id="thresholdSlider" type="range" min="0" max="100" step="1" value="80" aria-label="Minimum score required for automatic clearance">
+      <input id="thresholdSlider" type="range" min="0" max="100" step="1" disabled aria-label="Minimum score required for automatic clearance">
       <span>100%</span>
     </div>
     <div class="threshold-preview" aria-live="polite">

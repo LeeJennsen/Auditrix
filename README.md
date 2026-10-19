@@ -27,19 +27,28 @@ docker compose up --build -d
 docker compose logs -f
 ```
 
-Audit runner with provider selection, sample tickets, and batch audit: http://localhost:8000/auditrix-prototype-main/#/audit-runner
-Real-Time Monitor includes a controllable randomized sample stream, generated records use the local mock evaluator.
+Audit runner for incoming tickets: http://localhost:8000/auditrix-prototype-main/#/audit-runner
+Real-Time Monitor streams saved database records over WebSocket.
 
-### Persistent audit history
+### Persistent audit history and live updates
 
-The app stores every successful audit, QC review, and alert acknowledgement in
-SQLite. Local runs use `data/audit.sqlite3` by default. Docker Compose stores the
-database in the named `audit_data` volume mounted at `/data`, so records survive
-container restarts, rebuilds, and replacement. The five demo records are inserted
-only when the database is empty; new records are not overwritten at startup.
+Local runs use SQLite at `data/audit.sqlite3` by default. Docker Compose starts a
+PostgreSQL service and stores its data in the named `postgres_data` volume. The
+database contains audit tickets, recalculated score spreads, alerts, and saved
+settings. Startup does not create fabricated audit history. If the older Compose
+SQLite volume exists, its audit records and threshold are imported on startup.
+Each audit row stores `policy_compliance`, `escalation_protocol`,
+`tone_and_sentiment`, and `documentation_accuracy` as integer columns. The API
+and WebSocket snapshot read those values from the row; a dimension with only
+not-applicable criteria is returned as `null`.
 
-Keep the `audit_data` volume to preserve history. `docker compose down -v` removes
-the volume and permanently deletes its database contents.
+The browser opens `/api/v1/ws` on the same port as the web app (`8000`). Saved
+audits and reviews are broadcast to connected pages as database-backed snapshots.
+When the stream or database is unavailable, the UI clears ticket data and shows
+the connection as unavailable. It reconnects automatically; ticket records and
+score dimensions are never supplied by a local demo bundle.
+
+Keep the `postgres_data` volume to preserve current history. `docker compose down -v` removes the database volumes and permanently deletes their contents.
 
 ## 3. Test the webhook
 
@@ -100,21 +109,20 @@ curl http://localhost:8000/health
   transient API failures with bounded backoff; after a 503, the service tries
   `gemini-3.8-flash`. Change `GEMINI_MODEL`, `GEMINI_FALLBACK_MODEL`, or
   `GEMINI_THINKING_LEVEL` in `.env` to tune this behavior.
-- **Sample tickets**: open the dashboard and choose **Run New Audit Batch**,
-  or open `/auditrix-prototype-main/#/audit-runner`. The server provides 18 INC/SR/CR examples with
-  strong and weak closure notes. Select one or more, choose the provider, and
-  run them through the normal audit engine. Successful audits appear in the
-  ticket queue and history. `GET /api/v1/samples` lists examples and
-  `POST /api/v1/audits/batch` runs selected examples. Standalone webhook
-  payloads are also in `sample_payload*.json`.
-- **Live demo stream**: on Real-Time Monitor, select an interval and start or
-  stop the stream. `POST /api/v1/simulator/tick` generates one randomized
-  sample and runs it through the regular webhook pipeline using the mock
-  evaluator. Analytics and dashboard totals refresh automatically.
-- **Persistent storage**: successful audits and human review/alert changes are
-  written to SQLite immediately. Set `AUDIT_DB_PATH` to change the database
-  location. Docker Compose sets it to `/data/audit.sqlite3` and persists that
-  directory in the `audit_data` named volume.
+- **Ticket intake**: open `/auditrix-prototype-main/#/audit-runner` to submit a
+  closed ticket, or POST incoming ticket data to `/api/v1/tickets/webhook`.
+  Audits and their score dimensions are saved before the service broadcasts
+  the updated database snapshot over WebSocket.
+- **Procedural test traffic**: use the Run Audit page's **Generate 10 tickets**
+  control or call `POST /api/v1/generate-tickets?count=10`. The generator scores
+  each transcript with the configured AI provider when a key is available and
+  records a randomized demo score when the provider is missing or fails. It
+  bulk-commits each batch and broadcasts the updated snapshot. To keep generating
+  batches from a terminal, run `python seed.py --continuous --count 10`.
+- **Persistent storage**: successful audits, score distributions, alerts, and
+  human review changes are written to the configured database. Set
+  `DATABASE_URL` (for PostgreSQL, use `postgresql+psycopg://...`); without it,
+  local runs use SQLite. `AUDIT_DB_PATH` changes the local SQLite file location.
 
 - **Preprocessing**: `preprocess_ticket_text()` normalizes whitespace,
   strips control characters, redacts emails/phone numbers before they

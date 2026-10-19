@@ -61,9 +61,9 @@ var records = [];
   }
 
   render();
-  AuditAPI.listTickets().then(function (tickets) {
+  AuditAPI.onState(function (state) {
     if (!isHistoryPage()) return;
-    records = tickets.map(function (ticket) {
+    records = state.tickets.map(function (ticket) {
       var closedAt = new Date(ticket.closed_at);
       return {
         audit_id: ticket.audit_id,
@@ -73,12 +73,9 @@ var records = [];
         summary: ticket.description,
         auditor: ticket.closing_agent,
         score: String(ticket.compliance_score),
-        month: closedAt.getFullYear() + '-' + String(closedAt.getMonth() + 1).padStart(2, '0'),
+        month: closedAt.getFullYear() + '-' + String(closedAt.getMonth() + 1).padStart(2, '0')
       };
     });
     updateMonthOptions();
     render();
-  }).catch(function (error) {
-    if (!isHistoryPage()) return;
-    document.getElementById('historyRows').textContent = error.message;
   });

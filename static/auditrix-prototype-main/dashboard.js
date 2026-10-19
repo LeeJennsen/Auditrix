@@ -15,7 +15,7 @@
   }
 
   function badgeStyle(status) {
-    if (status === 'Cleared') return 'display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #E8F5EE; color: #1E7F4D;';
+    if (status === 'Cleared' || status === 'AI Passed · Review available' || status.indexOf('Human reviewed') === 0) return 'display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #E8F5EE; color: #1E7F4D;';
     if (status === 'Flagged') return 'display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #FDF3E6; color: #B45309;';
     return 'display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #FBEAE6; color: #B4432F;';
   }
@@ -80,7 +80,7 @@
           '<div class="mono" style="font-weight: 600; color: #1E293B;">' + escapeHtml(t.score) + '</div>' +
           '<div><span style="' + badgeStyle(t.status) + '">' + escapeHtml(t.status) + '</span>' + (t.severity ? '<div>' + severityBadge(t.severity) + '</div>' : '') + '</div>' +
           '<div style="font-size: 11.5px; ' + alert.style + '">' + alert.text + '</div>' +
-          '<div><a href="ticket-detail.html?id=' + encodeURIComponent(t.audit_id) + '" style="display: inline-flex; align-items: center; gap: 4px; padding: 7px 12px; border-radius: 7px; background: #2563EB; color: #FFFFFF; font-weight: 600; font-size: 12.5px; text-decoration: none; white-space: nowrap;">View &rarr;</a></div>' +
+          '<div><a href="ticket-detail.html?id=' + encodeURIComponent(t.audit_id) + '" style="display: inline-flex; align-items: center; gap: 4px; padding: 7px 12px; border-radius: 7px; background: #2563EB; color: #FFFFFF; font-weight: 600; font-size: 12.5px; text-decoration: none; white-space: nowrap;">' + (t.review_action ? 'Update review' : 'Review') + ' &rarr;</a></div>' +
           '</div>';
       }).join('');
     }
@@ -108,13 +108,26 @@
         requested: closed.toLocaleDateString(),
         auditor: ticket.closing_agent,
         score: String(ticket.compliance_score),
-        status: ticket.requires_human_qc ? 'Flagged' : 'Cleared',
+        status: ticket.requires_human_qc ? 'Flagged' : ticket.review_action ? 'Human reviewed · ' + (ticket.review_action === 'approve' ? 'agrees' : 'disagrees') : 'AI Passed · Review available',
         age: age,
         severity: ticket.requires_human_qc ? (ticket.compliance_score < 70 ? 'critical' : 'minor') : '',
       });
     });
     render();
     updateQueueCounts();
+  }
+
+  function updateScoreSpread(records) {
+    var fields = ['policy_compliance', 'escalation_protocol', 'tone_and_sentiment', 'documentation_accuracy'];
+    fields.forEach(function (field) {
+      var values = records.map(function (ticket) {
+        return ticket.score_spread && ticket.score_spread[field];
+      }).filter(function (value) { return value !== null && value !== undefined && Number.isFinite(Number(value)); });
+      var node = document.getElementById('spread-' + field.replace(/_/g, '-'));
+      if (node) node.textContent = values.length
+        ? Math.round(values.reduce(function (sum, value) { return sum + Number(value); }, 0) / values.length) + ' / 100'
+        : 'N/A';
+    });
   }
 
   function updateQueueCounts() {
@@ -139,16 +152,21 @@
   }
 
   function refreshDashboard() {
-    return Promise.all([AuditAPI.listTickets(), AuditAPI.getAnalytics()]).then(function (results) {
-      if (!isDashboardPage()) return results;
-      setTickets(results[0]);
-      updateAnalytics(results[1]);
-      return results;
+    return AuditAPI.getState().then(function (state) {
+      if (!isDashboardPage()) return [state.tickets, state.analytics];
+      setTickets(state.tickets);
+      updateScoreSpread(state.tickets);
+      updateAnalytics(state.analytics);
+      return [state.tickets, state.analytics];
     });
   }
 
-  refreshDashboard().catch(showApiError);
-  window.setInterval(function () { refreshDashboard().catch(showApiError); }, 5000);
+  AuditAPI.onState(function (state) {
+    if (!isDashboardPage()) return;
+    setTickets(state.tickets);
+    updateScoreSpread(state.tickets);
+    updateAnalytics(state.analytics);
+  });
 
   document.getElementById('runBatchBtn').addEventListener('click', function () {
     window.AuditApp.navigate('audit-runner');
@@ -159,10 +177,11 @@
     button.disabled = true;
     try {
       var tickets = await AuditAPI.listTickets();
-      var columns = ['ticket_id','type','description','closing_agent','compliance_score','requires_human_qc','llm_provider','llm_model','audited_at'];
+      var columns = ['ticket_id','type','description','closing_agent','compliance_score','policy_compliance','escalation_protocol','tone_and_sentiment','documentation_accuracy','requires_human_qc','llm_provider','llm_model','audited_at'];
       var csv = [columns.join(','), ...tickets.map(function (ticket) {
         return columns.map(function (key) {
-          var value = ticket[key] == null ? '' : String(ticket[key]);
+          var value = key in ticket ? ticket[key] : ticket.score_spread && ticket.score_spread[key];
+          value = value == null ? '' : String(value);
           return '"' + value.replace(/"/g, '""') + '"';
         }).join(',');
       })].join('\\r\\n');
@@ -194,14 +213,16 @@
     document.getElementById('simResult').innerHTML = '';
   }
 
-  function simulateIngestion() {
+  function refreshAuditData() {
     var btn = document.getElementById('simulateBtn');
     if (btn.disabled) return;
     btn.disabled = true;
     btn.textContent = 'Refreshing…';
     refreshDashboard().then(function (results) {
       if (!isDashboardPage()) return;
-      document.getElementById('simResult').textContent = 'Loaded ' + results[1].total_count + ' audit records from the backend.';
+      document.getElementById('simResult').textContent = AuditAPI.getMode() === 'live'
+        ? 'Loaded ' + results[1].total_count + ' audit records from the database.'
+        : 'Database connection unavailable. No local demo records are being displayed.';
     }).catch(showApiError).finally(function () {
       btn.disabled = false;
       btn.textContent = 'Refresh Audit Data';

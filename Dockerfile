@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application source (including the frontend it serves at "/")
 COPY main.py ./
+COPY seed.py ./
 COPY static/ ./static/
 
 # Non-root user for defense-in-depth
